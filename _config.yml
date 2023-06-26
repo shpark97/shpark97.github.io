@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "I'm so glad to see you!"
+title                    : "Glad to see you, I'm Seonghwan!"
 title_separator          : "-"
 name                     : &name "Seong Hwan, Park"
 description              : &description "personal description"
@@ -80,9 +80,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "Seong Hwan Park"
+  name             : "Seonghwan Park"
   avatar           : "profile.png"
-  bio              : "<p> MS Student <br> Artificial Intelligence shpark97@postech.ac.kr <br> <br> POSTECH"
+  bio              : "<p> MS Student <br> Artificial Intelligence shpark97@postech.ac.kr <br> POSTECH"
   location         : "Pohang, Korea"
   school           : "POSTECH"
   employer         :
