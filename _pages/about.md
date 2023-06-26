@@ -18,7 +18,7 @@ Publications
 
 * Jinseok Chung, <ins>Seonghwan Park</ins>, Jaeho Lee, and Namhoon Lee, "On the Effectiveness of Sharpness-Aware Minimization with Large Mini-batches", ICML 2023 Workshop on High-dimensional Learning Dynamics (HiLD)
 
-* Jungyong Shim*, <ins>Seonghwan Park*</ins>, Eun-sol Kim, "Knowledge Prompting Generation for Commonsense Reasoning with Large-Scale Language Models", Korea Software Congress (KSC) 2022 (oral presentation)
+* Jeong-Yong Shim*, <ins>Seonghwan Park*</ins>, Eun-sol Kim, "Knowledge Prompting Generation for Commonsense Reasoning with Large-Scale Language Models", Korea Software Congress (KSC) 2022 (oral presentation)
 
 
 
