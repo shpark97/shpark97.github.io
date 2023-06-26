@@ -52,12 +52,12 @@ Honors and Awards
   
 Service and leadership
 ------
-* 2018.10-2020.08 : Republic of Korea Air Force
-  * ROKAF Logistics Command
+* 2018.10-2020.08 : Republic of Korea Air Force (ROKAF)
+  * [ROKAF Logistics Command](https://www.aflc.mil.kr:8603/user/indexMain.action?siteId=lcint)
   * Served as a sergeant
 * 2018.03-2018.09 : Hanyang Red Cross Youth (HRCY)
   * Hanyang University
   * Vice President
-* 2018.03-2017.06 : Mentor and Little Friends
-  * LH, Korea Land and Housing Corporation
+* 2018.03-2017.06 : [Mentor and Little Friends](https://www.lhggoma.co.kr/)
+  * [LH](https://www.lh.or.kr/index.do), Korea Land and Housing Corporation
   * Mentor
