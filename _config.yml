@@ -82,13 +82,13 @@ analytics:
 author:
   name             : "Seong Hwan Park"
   avatar           : "profile.png"
-  bio              : "<p> MS Student <br> Artificial Intelligence <br> POSTECH"
+  bio              : "<p> MS Student <br> Artificial Intelligence shpark97@postech.ac.kr <br> <br> POSTECH"
   location         : "Pohang, Korea"
   school           : "POSTECH"
   employer         :
-  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  #pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   googlescholar    : "https://scholar.google.com/citations?user=cBCB-e8AAAAJ&hl=ko"
-  email            : "shpark97@postech.ac.kr"
+  #email            : "shpark97@postech.ac.kr"
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
