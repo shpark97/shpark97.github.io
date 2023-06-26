@@ -5,6 +5,7 @@ author_profile: true
 redirect_from: 
   - /about/
   - /about.html
+---
 ------
 
 Hello, I'm Seonghwan Park, a master student in Artificial Intelligence at [POSTECH](https://ai.postech.ac.kr/).
