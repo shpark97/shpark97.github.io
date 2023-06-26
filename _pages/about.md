@@ -41,7 +41,7 @@ Work Experience
 Teaching Experience
 ------
 * 2022.05-2022.06 : POSCO AI Fellowship
-  * Teaching assistant
+  * Teaching Assistant
   * Topic : Deep Learning
 
 
