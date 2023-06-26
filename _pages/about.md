@@ -24,9 +24,9 @@ Publications
 
 Education
 ------
+* M.S. in Artificial Intelligence, POSTECH, 2023.03-present
 * B.S. in Computer Science, Hanyang University, 2017.03-2023.02
   * GPA : 3.86/4.0, Summa Cum Laude
-* M.S. in Artificial Intelligence, POSTECH, 2023.03-present
 
 Work Experience
 ------
