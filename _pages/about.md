@@ -18,7 +18,7 @@ Publications
 
 * Jinseok Chung, <ins>Seonghwan Park</ins>, Jaeho Lee, and Namhoon Lee, "On the Effectiveness of Sharpness-Aware Minimization with Large Mini-batches", ICML 2023 Workshop on High-dimensional Learning Dynamics (HiLD)
 
-* Jeong-Yong Shim*, <ins>Seonghwan Park*</ins>, Eun-sol Kim, "Knowledge Prompting Generation for Commonsense Reasoning with Large-Scale Language Models", Korea Software Congress (KSC) 2022 (oral presentation)
+* Jeong-Yong Shim*, <ins>Seonghwan Park*</ins>, Eun-Sol Kim, "Knowledge Prompting Generation for Commonsense Reasoning with Large-Scale Language Models", Korea Software Congress (KSC) 2022 (oral presentation)
 
 
 
@@ -33,7 +33,7 @@ Work Experience
 * 2022.01-2022.12 : Undergraduate Research Intern
   * [Machine Learning Lab](https://mllab-hyu.github.io/) in HYU
   * Research Area : Large-scale Language Model
-  * Supervisor: [Prof. Eun-sol Kim](https://kimeunsol.github.io/)
+  * Supervisor: [Prof. Eun-Sol Kim](https://kimeunsol.github.io/)
 
 * 2021.12-2022.02 : Samsung SDS Algorithm Academy Winter
   * Topic : Algorithm
