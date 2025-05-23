@@ -7,9 +7,9 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Glad to see you, I'm Seonghwan!"
+# title                    : "Glad to see you, I'm Seonghwan!"
 title_separator          : "-"
-name                     : &name "Seong Hwan, Park"
+name                     : &name "Seonghwan, Park"
 description              : &description "personal description"
 url                      : https://shpark97.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -80,7 +80,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "Seong Hwan Park"
+  name             : "Seonghwan Park"
   avatar           : "my_png.jpg"
   bio              : "<p> MS Student <br> Artificial Intelligence shpark97@postech.ac.kr <br> POSTECH"
   location         : "Pohang, Korea"
@@ -103,7 +103,7 @@ author:
   instagram        :
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
-  linkedin         : "seong-hwan-park-7b2878256/"
+  linkedin         : "https://www.linkedin.com/in/seonghwan-park-7b2878256/"
   #orcid            : "http://orcid.org/yourorcidurl"
   pinterest        :
   soundcloud       :

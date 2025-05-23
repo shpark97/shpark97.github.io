@@ -10,7 +10,12 @@ redirect_from:
 
 Hello, I'm Seonghwan Park, a master student in Artificial Intelligence at [POSTECH](https://ai.postech.ac.kr/).
 
-I am advised by [Prof. Namhoon Lee](https://namhoonlee.github.io/), in the [Computation Optimization Lab](https://namhoonlee.github.io/group). I'm currently interested in efficient machine learning and large-scale vision-language model training.
+I am advised by [Prof. Namhoon Lee](https://namhoonlee.github.io/), in the [Computation Optimization Lab](https://namhoonlee.github.io/group). I'm currently interested in efficient/interpretable machine learning and large-scale optimization.
+
+
+Preprints
+------
+* <ins>Seonghwan Park</ins>, Jueun Mun, Donghyun Oh, and Namhoon Lee, "[An Analysis of Concept Bottleneck Models: Measuring, Understanding, and Mitigating the Impact of Noisy Annotations](https://arxiv.org/abs/2505.16705)", arXiv.
 
 
 Publications
@@ -41,9 +46,6 @@ Work Experience
   * Research Area : Large-scale Language Model
   * Supervisor: [Prof. Eun-Sol Kim](https://kimeunsol.github.io/)
 
-* 2021.12-2022.02 : Samsung SDS Algorithm Academy Winter
-  * Topic : Algorithm
-
 
 Teaching Experience
 ------
@@ -66,9 +68,3 @@ Service and leadership
 * 2018.10-2020.08 : Republic of Korea Air Force (ROKAF)
   * [ROKAF Logistics Command](https://www.aflc.mil.kr:8603/user/indexMain.action?siteId=lcint)
   * Served as a sergeant
-* 2018.03-2018.09 : Hanyang Red Cross Youth (HRCY)
-  * Hanyang University
-  * Vice President
-* 2018.03-2017.06 : [Mentor and Little Friends](https://www.lhggoma.co.kr/)
-  * [LH](https://www.lh.or.kr/index.do), Korea Land and Housing Corporation
-  * Mentor
