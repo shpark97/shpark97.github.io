@@ -26,6 +26,8 @@
   --radius: 14px;
   --shadow-card: 0 1px 2px rgba(28, 27, 24, 0.04), 0 8px 24px -12px rgba(28, 27, 24, 0.12);
   --maxw: 880px;
+
+  --zoom-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4.2-4.2M11 8v6M8 11h6'/%3E%3C/svg%3E");
 }
 
 [data-theme='dark'] {
@@ -472,6 +474,13 @@ strong { font-weight: 600; color: var(--ink); }
   gap: 14px;
 }
 .pub {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  column-gap: 20px;
+  /* Centred, not top-aligned: the figure frame and the text block are rarely the
+     same height, and centring splits the difference into even padding instead of
+     leaving a hole under the text. */
+  align-items: center;
   padding: 16px 18px;
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -481,6 +490,178 @@ strong { font-weight: 600; color: var(--ink); }
 .pub-body {
   min-width: 0;
 }
+
+/* Figure thumbnail.
+   Each image in images/pubs/ is pre-composed onto the same 16:9 white canvas
+   with a consistent inner margin, so it fills this frame edge to edge no matter
+   what shape the underlying paper figure is. The frame — hairline border, soft
+   radius — is what makes seven very different figures read as one set. */
+.pub-thumb {
+  grid-column: 1;
+  align-self: center;
+  position: relative;
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.pub-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease, filter 0.25s ease;
+}
+.pub-thumb[data-full] { cursor: zoom-in; }
+
+/* Zoom affordance, revealed on hover */
+.pub-thumb[data-full]::after {
+  content: '';
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--ink) 62%, transparent);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  -webkit-mask: var(--zoom-icon) center / 13px 13px no-repeat;
+  mask: var(--zoom-icon) center / 13px 13px no-repeat;
+  -webkit-mask-composite: source-over;
+}
+.pub-thumb[data-full]::before {
+  content: '';
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--bg-elev) 88%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+.pub:hover .pub-thumb[data-full]::before,
+.pub:hover .pub-thumb[data-full]::after,
+.pub-thumb[data-full]:focus-visible::before,
+.pub-thumb[data-full]:focus-visible::after { opacity: 1; }
+/* No hover on touch, so keep the affordance visible there */
+@media (hover: none) {
+  .pub-thumb[data-full]::before,
+  .pub-thumb[data-full]::after { opacity: 1; }
+}
+
+.pub-thumb[data-full]:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+.pub-thumb[data-full]:hover img { transform: scale(1.04); }
+.pub-thumb[data-full]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Dark mode: the figures are white plates, so settle them back a little and let
+   the border carry the edge; hover brings them fully up. */
+[data-theme='dark'] .pub-thumb { background: #eae7e1; }
+[data-theme='dark'] .pub-thumb img { filter: brightness(0.88) contrast(1.03) saturate(0.96); }
+[data-theme='dark'] .pub-thumb[data-full]:hover img,
+[data-theme='dark'] .pub-thumb[data-full]:focus-visible img { filter: none; }
+
+/* Placeholder for a paper whose figure isn't up yet */
+.pub-thumb.is-empty {
+  background: transparent;
+  border-style: dashed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-mute);
+  opacity: 0.5;
+}
+
+/* -------------------- Figure lightbox -------------------- */
+.lightbox[hidden] { display: none; }
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ink) 62%, transparent);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.lightbox-panel {
+  position: relative;
+  max-width: min(920px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45);
+  padding: 20px 20px 16px;
+  animation: lb-in 0.22s ease;
+}
+@keyframes lb-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+/* The wrapper shrink-wraps to the image, and the caption is excluded from that
+   measurement (width:0) then stretched back out (min-width:100%) -- so the text
+   column ends up exactly as wide as the figure above it, whatever its shape. */
+.lightbox-fig {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.lightbox-panel img {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100vh - 210px);
+  border-radius: 6px;
+}
+.lightbox-caption {
+  width: 0;
+  min-width: 100%;
+  margin: 15px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.lightbox-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px; height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.lightbox-close:hover { color: var(--accent); border-color: var(--accent); }
 .pub:hover {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
   box-shadow: 0 3px 12px color-mix(in srgb, var(--ink) 8%, transparent);
@@ -733,8 +914,16 @@ strong { font-weight: 600; color: var(--ink); }
   .eyebrow { font-size: 9.5px; letter-spacing: 0.06em; }
 
   .pub {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 12px;
     padding: 14px 15px;
   }
+  .pub-thumb { align-self: stretch; }
+
+  .lightbox { padding: 14px; }
+  .lightbox-panel { padding: 16px 14px 14px; }
+  .lightbox-panel img { max-height: calc(100vh - 230px); }
+  .lightbox-caption { font-size: 12.5px; }
 
   .news-list li {
     grid-template-columns: 1fr;

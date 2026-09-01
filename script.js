@@ -90,3 +90,60 @@ document.getElementById('year').textContent = new Date().getFullYear();
     frame.style.transform = '';
   });
 })();
+
+// ----- Publication figure lightbox -----
+(function () {
+  const box = document.getElementById('lightbox');
+  if (!box) return;
+  const img = document.getElementById('lightboxImg');
+  const cap = document.getElementById('lightboxCaption');
+  const fig = box.querySelector('.lightbox-fig');
+  let opener = null;
+
+  // Match the caption column to the figure. CSS can only shrink-wrap to the
+  // image's intrinsic width, which is wrong whenever the image is limited by
+  // max-height instead, so measure what actually got rendered.
+  function fitCaption() {
+    fig.style.width = '';
+    const w = img.getBoundingClientRect().width;
+    if (w) fig.style.width = w + 'px';
+  }
+
+  function open(thumb) {
+    const full = thumb.dataset.full;
+    if (!full) return;
+    opener = thumb;
+    img.src = full;
+    img.alt = thumb.querySelector('img') ? thumb.querySelector('img').alt : '';
+    // innerHTML, not textContent: captions may carry light markup such as <em>.
+    cap.innerHTML = thumb.dataset.caption || '';
+    box.hidden = false;
+    document.body.style.overflow = 'hidden';
+    fitCaption();
+    box.querySelector('.lightbox-close').focus();
+  }
+
+  function close() {
+    box.hidden = true;
+    fig.style.width = '';
+    img.src = '';
+    document.body.style.overflow = '';
+    if (opener) { opener.focus(); opener = null; }
+  }
+
+  document.querySelectorAll('.pub-thumb[data-full]').forEach((thumb) => {
+    thumb.addEventListener('click', () => open(thumb));
+    thumb.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(thumb); }
+    });
+  });
+
+  box.addEventListener('click', (e) => {
+    if (e.target.closest('[data-close]')) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !box.hidden) close();
+  });
+  img.addEventListener('load', fitCaption);
+  window.addEventListener('resize', () => { if (!box.hidden) fitCaption(); });
+})();
