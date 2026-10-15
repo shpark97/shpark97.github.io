@@ -1008,11 +1008,6 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   color: var(--ink);
 }
 .tl-body p { margin: 0; color: var(--ink-soft); font-size: 13.5px; }
-.tl-body .tl-focus {
-  margin-top: 6px;
-  color: var(--ink-soft);
-  font-style: italic;
-}
 
 /* -------------------- Education extras (timeline rows) -------------------- */
 .tl-body .tl-gpa {
