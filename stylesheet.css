@@ -1024,21 +1024,6 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   color: var(--ink-soft);
   font-style: italic;
 }
-.tl-refs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 8px !important;
-}
-.tl-refs a {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--ink-mute);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 1px 7px;
-}
-.tl-refs a:hover { color: var(--accent); border-color: var(--accent); }
 
 /* -------------------- Education extras (timeline rows) -------------------- */
 .tl-body .tl-gpa {
@@ -1081,6 +1066,9 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   line-height: 1.5;
 }
 .cv-list li + li { border-top: 1px solid var(--line); }
+/* Short one-line entries (awards) read better without rules between them */
+.cv-list.is-compact li { padding: 4px 0; }
+.cv-list.is-compact li + li { border-top: 0; }
 .cv-date {
   font-family: var(--font-mono);
   font-size: 12px;
