@@ -801,17 +801,6 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   color: var(--tier-a);
   background: var(--tier-a-soft);
 }
-.badge-ws {
-  color: var(--ink-soft);
-  background: var(--bg-soft);
-  border: 1px solid var(--line);
-  padding: 3px 7px;
-}
-.badge-review {
-  color: var(--ink-mute);
-  border: 1px dashed color-mix(in srgb, var(--ink-mute) 60%, transparent);
-  padding: 3px 7px;
-}
 .venue-full {
   font-style: italic;
   font-size: 12.5px;
@@ -1097,7 +1086,6 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
 [data-theme='white'] .r-card + .r-card { border-left: 1px solid var(--line); }
 [data-theme='white'] .r-card:hover { transform: none; box-shadow: none; }
 [data-theme='white'] .r-icon { background: transparent; border: 1px solid var(--line); }
-[data-theme='white'] .badge-ws { background: transparent; }
 
 /* -------------------- Footer & back-to-top -------------------- */
 .footer {
