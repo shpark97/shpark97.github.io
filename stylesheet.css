@@ -1,7 +1,7 @@
 /* ============================================================
    Seonghwan Park: personal site
    Two themes, toggled in the nav and persisted:
-     white  pure white + ink, navy accent (default)
+     white  pure white + ink, wine accent echoing the CV (default)
      dark   deep ink + amber accent
    ============================================================ */
 
@@ -23,9 +23,9 @@
   --ink-soft: #3f3f46;
   --ink-mute: #76767f;
   --line: #e7e7ea;
-  --accent: #1f4e8c;        /* navy: a cool accent keeps the white reading as white */
-  --accent-soft: #e4ecf7;
-  --accent-ink: #143766;
+  --accent: #a3313c;        /* wine, close to the CV's firebrick */
+  --accent-soft: #f6e4e5;
+  --accent-ink: #7a1f2b;
   --note: #d62828;
   --gold: #b88a3a;
   --tier-a: #1f6b4a;
