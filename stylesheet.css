@@ -689,7 +689,7 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease, filter 0.25s ease;
+  transition: filter 0.25s ease;
 }
 .pub-thumb[data-full] { cursor: zoom-in; }
 
@@ -738,7 +738,6 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
   box-shadow: 0 4px 14px color-mix(in srgb, var(--ink) 10%, transparent);
 }
-.pub-thumb[data-full]:hover img { transform: scale(1.04); }
 .pub-thumb[data-full]:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
@@ -1054,137 +1053,72 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
 }
 .tl-refs a:hover { color: var(--accent); border-color: var(--accent); }
 
-/* -------------------- Education -------------------- */
-.edu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-.edu-card {
-  position: relative;
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px 20px;
-  overflow: hidden;
-  transition: transform 0.25s ease, border-color 0.25s ease;
-}
-.edu-card::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: var(--accent);
-}
-.edu-card:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
-}
-.edu-date {
+/* -------------------- Education extras (timeline rows) -------------------- */
+.tl-body .tl-gpa {
+  margin-top: 4px;
   font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--ink-mute);
-  margin-bottom: 6px;
-}
-.edu-card h3 {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 19px;
-  margin: 0 0 2px;
+  font-size: 12px;
   color: var(--ink);
 }
-.edu-card p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
-.edu-card .edu-degree { color: var(--ink); font-weight: 500; margin-bottom: 4px; }
-.edu-gpa {
-  margin-top: 10px !important;
-  font-family: var(--font-mono);
-  font-size: 12px !important;
-  color: var(--ink) !important;
-}
-.edu-gpa span { color: var(--ink-mute); }
+.tl-gpa span { color: var(--ink-mute); }
 .honor {
   font-style: italic;
   color: var(--accent);
   font-weight: 500;
 }
 
-/* -------------------- Cards (More) -------------------- */
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+/* -------------------- Awards / patents / teaching / service rows -------------------- */
+.sub-block + .sub-block { margin-top: 28px; }
+.sub-head {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin: 0 0 4px;
 }
-.card {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px 20px;
-  transition: transform 0.25s ease, border-color 0.25s ease;
-}
-.card:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
-}
-.card h3 {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 17.5px;
-  margin: 0 0 12px;
-  color: var(--ink);
-}
-.card-list {
+.cv-list {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+.cv-list li {
   display: grid;
-  gap: 11px;
-}
-.card-list li {
-  font-size: 13px;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 14px;
+  align-items: baseline;
+  padding: 9px 0;
+  font-size: 14px;
   color: var(--ink-soft);
-  line-height: 1.45;
+  line-height: 1.5;
 }
-.card-list .meta {
-  display: block;
+.cv-list li + li { border-top: 1px solid var(--line); }
+.cv-date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.cv-list p { margin: 2px 0 0; font-size: 13px; color: var(--ink-mute); }
+.cv-list u { color: var(--ink-soft); }
+.cv-list .cv-meta {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--ink-mute);
-  margin-top: 2px;
-}
-.card-list p { margin: 3px 0 0; color: var(--ink-mute); font-size: 12.5px; }
-.card-list u { color: var(--ink-soft); }
-.venue-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 6px !important;
-}
-.venue-chips span {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--ink-soft);
-  background: var(--bg-soft);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 1px 6px;
 }
 
-/* White theme: tiles become soft grey fills instead of white boxes with borders */
-[data-theme='white'] .r-card,
-[data-theme='white'] .edu-card,
-[data-theme='white'] .card {
+/* White theme: research tiles become soft grey fills instead of white boxes */
+[data-theme='white'] .r-card {
   background: var(--bg-soft);
   border-color: transparent;
 }
-[data-theme='white'] .r-card:hover,
-[data-theme='white'] .edu-card:hover,
-[data-theme='white'] .card:hover {
+[data-theme='white'] .r-card:hover {
   background: #ffffff;
   border-color: var(--line);
   box-shadow: var(--shadow-card);
 }
 [data-theme='white'] .r-icon { background: #ffffff; box-shadow: 0 1px 2px rgba(23, 23, 26, 0.08); }
-[data-theme='white'] .venue-chips span { background: #ffffff; }
 
 /* -------------------- Footer & back-to-top -------------------- */
 .footer {
@@ -1303,8 +1237,7 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
     gap: 2px;
   }
 
-  .edu-grid,
-  .grid-2 { grid-template-columns: 1fr; }
+  .cv-list li { grid-template-columns: 1fr; gap: 2px; }
 
   .section-head h2 { font-size: 20px; }
 
@@ -1330,11 +1263,8 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .tl-date { font-size: 11px; }
   .tl-body h3 { font-size: 13.5px; }
   .tl-body p { font-size: 13.5px; }
-  .card { padding: 18px; }
-  .card h3 { font-size: 16px; }
-  .card-list li { font-size: 13px; }
-  .card-list .meta { font-size: 10.5px; }
-  .card-list p { font-size: 12.5px; }
+  .cv-list li { font-size: 13.5px; }
+  .cv-date { font-size: 11px; }
   .footer p { font-size: 11.5px; }
 }
 

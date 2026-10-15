@@ -178,7 +178,6 @@
           <h3>3D vision &amp; physical AI</h3>
           <p>Reconstructing humans and their interactions with objects from monocular input, toward robotics grounded in vision priors.</p>
           <ul class="r-papers">
-            <li><a href="#pub-hoi" data-pub-link>Human-object recon. <span>Under review</span></a></li>
             <li><a href="#pub-jacobian" data-pub-link>JacobianAvatar <span>ECCV 2026</span></a></li>
             <li><a href="#pub-cando" data-pub-link>CanDO <span>WACV 2027</span></a></li>
           </ul>
@@ -214,23 +213,9 @@
 
       <ul class="pub-list" id="pubList">
 
-        <li class="pub" id="pub-hoi" data-year="2027" data-topic="3d optimization">
-          <figure class="pub-thumb" data-full="images/pubs/hoi.png" data-caption="Reconstructing a person together with the object they interact with from a single image is challenging for two reasons: the contact surfaces are occluded, and a rigidly skinned parametric hand cannot capture realistic grasps. We generate complementary virtual views and use their consensus to initialize the arrangement, then optimize it for physical consistency with a semi-rigid hand. An example shows the input image, followed by the reconstruction from the front view and a close-up of the hand." role="button" tabindex="0" aria-label="Enlarge figure: An input photograph of a person lifting a ball overhead, with the reconstructed 3D human and ball shown from the front and as a hand close-up">
-            <img src="images/pubs/hoi-thumb.png" alt="An input photograph of a person lifting a ball overhead, with the reconstructed 3D human and ball shown from the front and as a hand close-up" loading="lazy" decoding="async" />
-          </figure>
-          <div class="pub-body">
-            <h3 class="pub-title">Monocular 3D Human-Object Reconstruction via Generative View Consensus and Semi-Rigid Grasping</h3>
-            <p class="authors"><u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=37rgddAAAAAJ&hl=ko">Yong-Hoon Kwon</a>, <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Min-Gyu Park</a></p>
-            <p class="venue"><span class="badge badge-review">Under review</span></p>
-            <div class="pub-foot">
-              <div class="tags"><span class="tag">3D Vision</span><span class="tag">Optimization</span></div>
-            </div>
-          </div>
-        </li>
-
         <li class="pub" id="pub-cando" data-year="2027" data-topic="3d robustness optimization">
           <figure class="pub-thumb" data-full="images/pubs/point.png" data-caption="Point cloud models are increasingly deployed through score-only <em>black-box</em> interfaces, where rotations outside the training distribution can severely degrade accuracy, while retraining and gradient-based adaptation remain unavailable. CanDO canonicalizes inputs using forward queries alone, searching SO(3) for the rotation that maximizes model confidence. Left to right, coloured by ground-truth parts: the misoriented input, the pose recovered by CanDO, and the upright target." role="button" tabindex="0" aria-label="Enlarge figure: Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by ground-truth parts">
-            <img src="images/pubs/point-thumb.png" alt="Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by ground-truth parts" loading="lazy" decoding="async" />
+            <img src="images/pubs/point-thumb.png" srcset="images/pubs/point-thumb-480.png 480w, images/pubs/point-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by ground-truth parts" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title">Recovering Black-Box Point Cloud Models from Pose Shifts via Derivative-Free Optimization</h3>
@@ -244,7 +229,7 @@
 
         <li class="pub" id="pub-fold" data-year="2026" data-topic="robustness efficiency">
           <figure class="pub-thumb" data-full="images/pubs/ood.svg" data-caption="Empirical spectral densities of the feature Hessian on CIFAR-10 and ImageNet-200. Curvature increases monotonically with distribution-shift severity: the largest eigenvalue rises from ID to near-OOD and then far-OOD samples. FOLD leverages this separation for detection, scoring samples directly from the feature Hessian at approximately the cost of a standard forward pass." role="button" tabindex="0" aria-label="Enlarge figure: Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data">
-            <img src="images/pubs/ood-thumb.png" alt="Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data" loading="lazy" decoding="async" />
+            <img src="images/pubs/ood-thumb.png" srcset="images/pubs/ood-thumb-480.png 480w, images/pubs/ood-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2606.29952">Exploiting Local Flatness for Efficient Out-of-Distribution Detection</a></h3>
@@ -259,7 +244,7 @@
 
         <li class="pub" id="pub-jacobian" data-year="2026" data-topic="3d optimization">
           <figure class="pub-thumb" data-full="images/pubs/jacobian.png" data-caption="A digital human avatar reconstructed from a monocular video, shown throughout the motion sequence as rendered colour images paired with normal maps. Hierarchical neural Jacobian fields capture both rigid articulation and non-rigid local deformations while maintaining temporal geometric consistency." role="button" tabindex="0" aria-label="Enlarge figure: An animated human avatar shown as paired photo-realistic renders and normal maps along a motion sequence">
-            <img src="images/pubs/jacobian-thumb.png" alt="An animated human avatar shown as paired photo-realistic renders and normal maps along a motion sequence" loading="lazy" decoding="async" />
+            <img src="images/pubs/jacobian-thumb.png" srcset="images/pubs/jacobian-thumb-480.png 480w, images/pubs/jacobian-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="An animated human avatar shown as paired photo-realistic renders and normal maps along a motion sequence" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2606.31115v1">JacobianAvatar: Temporally Consistent Semi-rigid Avatar Reconstruction from a Monocular Video</a></h3>
@@ -274,7 +259,7 @@
 
         <li class="pub" id="pub-cbm" data-year="2025" data-topic="robustness optimization">
           <figure class="pub-thumb" data-full="images/pubs/cbm.png" data-caption="Concept bottleneck models first predict human-readable concepts, then derive the class label solely from those concepts, making their reasoning accessible through the concept layer. This interpretability, however, depends on a clean concept layer. Shown here is a t-SNE visualization of the CUB embedding learned for the <em>blue upperparts</em> concept, where &gamma; denotes the fraction of concept annotations corrupted during training. With clean supervision (&gamma;&nbsp;=&nbsp;0.0), samples with and without the concept form distinct clusters; after flipping 40% of labels (&gamma;&nbsp;=&nbsp;0.4), the clusters collapse, rendering the concept uninterpretable." role="button" tabindex="0" aria-label="Enlarge figure: t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling">
-            <img src="images/pubs/cbm-thumb.png" alt="t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling" loading="lazy" decoding="async" />
+            <img src="images/pubs/cbm-thumb.png" srcset="images/pubs/cbm-thumb-480.png 480w, images/pubs/cbm-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2505.16705">An Analysis of Concept Bottleneck Models: Measuring, Understanding, and Mitigating the Impact of Noisy Annotations</a></h3>
@@ -289,7 +274,7 @@
 
         <li class="pub" id="pub-zip" data-year="2025" data-topic="optimization efficiency">
           <figure class="pub-thumb" data-full="images/pubs/zip.svg" data-caption="Large vision-language models are often available only through <em>black-box</em> prediction APIs, making adaptation a query-intensive process of prompt tuning without gradients, where every call incurs a cost. ZIP reduces the required queries by reparameterizing prompts in a low-rank form and clipping its zeroth-order gradient estimates. Averaged across 13 vision-language tasks, ZIP reaches the target accuracy using roughly half as many queries as the strongest baseline (left) and achieves comparable training accuracy about 8&times; sooner (right)." role="button" tabindex="0" aria-label="Enlarge figure: Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines">
-            <img src="images/pubs/zip-thumb.png" alt="Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines" loading="lazy" decoding="async" />
+            <img src="images/pubs/zip-thumb.png" srcset="images/pubs/zip-thumb-480.png 480w, images/pubs/zip-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2504.06838">ZIP: An Efficient Zeroth-order Prompt Tuning for Black-box Vision-Language Models</a></h3>
@@ -304,7 +289,7 @@
 
         <li class="pub" id="pub-fedfwd" data-year="2023" data-topic="optimization efficiency">
           <figure class="pub-thumb" data-full="images/pubs/fedfwd.svg" data-caption="FedFwd replaces backpropagation with the Forward-Forward algorithm&rsquo;s layer-wise local updates, eliminating the need for clients to store intermediate activations. It enables federated training on memory-constrained edge devices. On MNIST, test accuracy over communication rounds shows that FedFwd closely tracks FedAvg with i.i.d. client data, while converging more slowly and with higher variance in the non-i.i.d. setting." role="button" tabindex="0" aria-label="Enlarge figure: Test accuracy versus communication rounds on MNIST for FedFwd and FedAvg, under i.i.d. and non-i.i.d. client data">
-            <img src="images/pubs/fedfwd-thumb.png" alt="Test accuracy versus communication rounds on MNIST for FedFwd and FedAvg, under i.i.d. and non-i.i.d. client data" loading="lazy" decoding="async" />
+            <img src="images/pubs/fedfwd-thumb.png" srcset="images/pubs/fedfwd-thumb-480.png 480w, images/pubs/fedfwd-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Test accuracy versus communication rounds on MNIST for FedFwd and FedAvg, under i.i.d. and non-i.i.d. client data" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2309.01150">FedFwd: Federated Learning without Backpropagation</a></h3>
@@ -319,7 +304,7 @@
 
         <li class="pub" id="pub-sam" data-year="2023" data-topic="optimization">
           <figure class="pub-thumb" data-full="images/pubs/sam.svg" data-caption="Test accuracy as a function of mini-batch size for SGD and SAM on a ResNet. The two methods perform comparably at small batch sizes, but as the mini-batch grows, SGD degrades sharply and erratically, whereas SAM remains robust." role="button" tabindex="0" aria-label="Enlarge figure: Test accuracy versus mini-batch size for SGD and SAM on a ResNet">
-            <img src="images/pubs/sam-thumb.png" alt="Test accuracy versus mini-batch size for SGD and SAM on a ResNet" loading="lazy" decoding="async" />
+            <img src="images/pubs/sam-thumb.png" srcset="images/pubs/sam-thumb-480.png 480w, images/pubs/sam-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Test accuracy versus mini-batch size for SGD and SAM on a ResNet" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://icml.cc/virtual/2023/25899">On the Effectiveness of Sharpness-Aware Minimization with Large Mini-batches</a></h3>
@@ -350,7 +335,7 @@
             <h3>Researcher · <a href="https://www.keti.re.kr/main/main.php">KETI</a></h3>
             <p>3D vision &amp; physical AI.<br>Supervisor: <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Dr. Min-Gyu Park</a>.</p>
             <p class="tl-focus">Currently working toward unified and generalizable monocular 3D hand-object interaction reconstruction.</p>
-            <p class="tl-refs"><a href="#pub-hoi" data-pub-link>Human-object recon.</a><a href="#pub-cando" data-pub-link>CanDO</a><a href="#pub-jacobian" data-pub-link>JacobianAvatar</a></p>
+            <p class="tl-refs"><a href="#pub-cando" data-pub-link>CanDO</a><a href="#pub-jacobian" data-pub-link>JacobianAvatar</a></p>
           </div>
         </article>
 
@@ -400,21 +385,25 @@
         <h2><span class="num">05</span> Education</h2>
       </div>
 
-      <div class="edu-grid">
-        <article class="edu-card">
-          <div class="edu-date">Mar 2023 — Aug 2025</div>
-          <h3>POSTECH</h3>
-          <p class="edu-degree">M.S. in Artificial Intelligence</p>
-          <p>Advised by <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a></p>
-          <p class="edu-gpa">GPA 3.9 / 4.0 <span>(4.0 / 4.3)</span></p>
+      <div class="timeline">
+        <article class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">Mar 2023 — Aug 2025</div>
+          <div class="tl-body">
+            <h3>M.S. in Artificial Intelligence · POSTECH</h3>
+            <p>Advised by <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a>.</p>
+            <p class="tl-gpa">GPA 3.9 / 4.0 <span>(4.0 / 4.3)</span></p>
+          </div>
         </article>
 
-        <article class="edu-card">
-          <div class="edu-date">Mar 2017 — Feb 2023</div>
-          <h3>Hanyang University</h3>
-          <p class="edu-degree">B.S. in Computer Science</p>
-          <p><span class="honor">summa cum laude</span></p>
-          <p class="edu-gpa">GPA 3.82 / 4.0 <span>(4.12 / 4.5)</span></p>
+        <article class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">Mar 2017 — Feb 2023</div>
+          <div class="tl-body">
+            <h3>B.S. in Computer Science · Hanyang University</h3>
+            <p>Graduated <span class="honor">summa cum laude</span>.</p>
+            <p class="tl-gpa">GPA 3.82 / 4.0 <span>(4.12 / 4.5)</span></p>
+          </div>
         </article>
       </div>
     </section>
@@ -425,84 +414,52 @@
         <h2><span class="num">06</span> Awards, Patents, Teaching &amp; Service</h2>
       </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <h3>Honors &amp; Awards</h3>
-          <ul class="card-list">
-            <li>
-              <strong>NeurIPS 2025 Travel Grant</strong>
-              <span class="meta">2025</span>
-            </li>
-            <li>
-              <strong>CKAIA Best Paper Finalist</strong>
-              <span class="meta">2025</span>
-            </li>
-            <li>
-              <strong>HYU Academic Excellence Award</strong> · top 3%
-              <span class="meta">2022</span>
-            </li>
-            <li>
-              <strong>Merit-based Scholarship</strong> · Hanyang University
-              <span class="meta">2022</span>
-            </li>
-            <li>
-              <strong>Career-based Scholarship</strong> · Hanyang University, 4 semesters
-              <span class="meta">2017 — 2018</span>
-            </li>
-          </ul>
-        </div>
+      <div class="sub-block">
+        <h3 class="sub-head">Honors &amp; Awards</h3>
+        <ul class="cv-list">
+          <li><span class="cv-date">2025</span><div><strong>NeurIPS 2025 Travel Grant</strong></div></li>
+          <li><span class="cv-date">2025</span><div><strong>CKAIA Best Paper Finalist</strong></div></li>
+          <li><span class="cv-date">2022</span><div><strong>HYU Academic Excellence Award</strong> · top 3%</div></li>
+          <li><span class="cv-date">2022</span><div><strong>Merit-based Scholarship</strong> · Hanyang University</div></li>
+          <li><span class="cv-date">2017 — 2018</span><div><strong>Career-based Scholarship</strong> · Hanyang University, 4 semesters</div></li>
+        </ul>
+      </div>
 
-        <div class="card">
-          <h3>Patents</h3>
-          <ul class="card-list">
-            <li>
-              <strong>A Method for Generating Data, Obtaining Data and an Electronic Apparatus Performing the Same</strong>
-              <p>Hyunjeong Lee, <u>Seonghwan Park</u>, Namhoon Lee, Jaehyeon Jeong, Seungin Park</p>
-              <span class="meta">Under registration review · KR</span>
-            </li>
-            <li>
-              <strong>Electronic Device for Training Artificial Intelligence Model in Black Box Environment by Using Prompts and Operating Method of the Same</strong>
-              <p>Namhoon Lee, Jaeho Lee, <u>Seonghwan Park</u>, Jaehyeon Jeong, Yongjun Kim</p>
-              <span class="meta">Under registration review · US &amp; KR</span>
-            </li>
-            <li>
-              <strong>Apparatus and Method for Reducing the Impact of Label Noise on the Prediction Accuracy of a Conceptual Bottleneck Model</strong>
-              <p>Namhoon Lee, <u>Seonghwan Park</u>, Jueun Mun</p>
-              <span class="meta">Under registration review · US &amp; KR</span>
-            </li>
-          </ul>
-        </div>
+      <div class="sub-block">
+        <h3 class="sub-head">Patents</h3>
+        <ul class="cv-list">
+          <li><span class="cv-date">KR</span><div>
+            <strong>A Method for Generating Data, Obtaining Data and an Electronic Apparatus Performing the Same</strong>
+            <p>Hyunjeong Lee, <u>Seonghwan Park</u>, Namhoon Lee, Jaehyeon Jeong, Seungin Park</p>
+            <p class="cv-meta">Under registration review</p>
+          </div></li>
+          <li><span class="cv-date">US &amp; KR</span><div>
+            <strong>Electronic Device for Training Artificial Intelligence Model in Black Box Environment by Using Prompts and Operating Method of the Same</strong>
+            <p>Namhoon Lee, Jaeho Lee, <u>Seonghwan Park</u>, Jaehyeon Jeong, Yongjun Kim</p>
+            <p class="cv-meta">Under registration review</p>
+          </div></li>
+          <li><span class="cv-date">US &amp; KR</span><div>
+            <strong>Apparatus and Method for Reducing the Impact of Label Noise on the Prediction Accuracy of a Conceptual Bottleneck Model</strong>
+            <p>Namhoon Lee, <u>Seonghwan Park</u>, Jueun Mun</p>
+            <p class="cv-meta">Under registration review</p>
+          </div></li>
+        </ul>
+      </div>
 
-        <div class="card">
-          <h3>Teaching</h3>
-          <ul class="card-list">
-            <li>
-              <strong>POSTECH</strong> · Teaching Assistant
-              <p>Introduction to Artificial Intelligence</p>
-              <span class="meta">Sep — Dec 2024</span>
-            </li>
-            <li>
-              <strong>POSCO AI Fellowship</strong> · Teaching Assistant
-              <p>Deep Learning</p>
-              <span class="meta">May — Jun 2023</span>
-            </li>
-          </ul>
-        </div>
+      <div class="sub-block">
+        <h3 class="sub-head">Teaching</h3>
+        <ul class="cv-list">
+          <li><span class="cv-date">Sep — Dec 2024</span><div><strong>Teaching Assistant</strong> · POSTECH<p>Introduction to Artificial Intelligence</p></div></li>
+          <li><span class="cv-date">May — Jun 2023</span><div><strong>Teaching Assistant</strong> · POSCO AI Fellowship<p>Deep Learning</p></div></li>
+        </ul>
+      </div>
 
-        <div class="card">
-          <h3>Service</h3>
-          <ul class="card-list">
-            <li>
-              <strong>Reviewer</strong>
-              <p class="venue-chips"><span>ICLR 2026</span><span>ECCV 2026</span><span>NeurIPS 2026</span><span>WACV 2027</span><span>TMLR</span></p>
-            </li>
-            <li>
-              <strong>Republic of Korea Air Force</strong> · Sergeant
-              <p>Logistics Command, military service</p>
-              <span class="meta">Oct 2018 — Aug 2020</span>
-            </li>
-          </ul>
-        </div>
+      <div class="sub-block">
+        <h3 class="sub-head">Service</h3>
+        <ul class="cv-list">
+          <li><span class="cv-date">2026 — 2027</span><div><strong>Reviewer</strong> · ICLR 2026, ECCV 2026, NeurIPS 2026, WACV 2027, TMLR</div></li>
+          <li><span class="cv-date">Oct 2018 — Aug 2020</span><div><strong>Sergeant</strong> · Republic of Korea Air Force, Logistics Command<p>Military service</p></div></li>
+        </ul>
       </div>
     </section>
 
