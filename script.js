@@ -1,22 +1,12 @@
-// ----- Theme switch: white / cream / dark (persisted) -----
-// The initial theme is set inline in <head> to avoid a flash; this only wires the buttons.
+// ----- Theme toggle: white / dark (persisted) -----
+// The initial theme is set inline in <head> to avoid a flash; this only wires the button.
 (function () {
   const root = document.documentElement;
-  const buttons = document.querySelectorAll('[data-theme-choice]');
-
-  function sync() {
-    const current = root.getAttribute('data-theme');
-    buttons.forEach((b) => b.setAttribute('aria-checked', b.dataset.themeChoice === current));
-  }
-
-  buttons.forEach((b) => {
-    b.addEventListener('click', () => {
-      root.setAttribute('data-theme', b.dataset.themeChoice);
-      try { localStorage.setItem('theme', b.dataset.themeChoice); } catch (e) {}
-      sync();
-    });
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'white' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
   });
-  sync();
 })();
 
 // ----- News expand / collapse -----
