@@ -1,15 +1,22 @@
-// ----- Theme toggle (persisted) -----
+// ----- Theme switch: white / cream / dark (persisted) -----
+// The initial theme is set inline in <head> to avoid a flash; this only wires the buttons.
 (function () {
   const root = document.documentElement;
-  const stored = localStorage.getItem('theme');
-  const initial = stored || 'light';
-  root.setAttribute('data-theme', initial);
+  const buttons = document.querySelectorAll('[data-theme-choice]');
 
-  document.getElementById('themeToggle').addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+  function sync() {
+    const current = root.getAttribute('data-theme');
+    buttons.forEach((b) => b.setAttribute('aria-checked', b.dataset.themeChoice === current));
+  }
+
+  buttons.forEach((b) => {
+    b.addEventListener('click', () => {
+      root.setAttribute('data-theme', b.dataset.themeChoice);
+      try { localStorage.setItem('theme', b.dataset.themeChoice); } catch (e) {}
+      sync();
+    });
   });
+  sync();
 })();
 
 // ----- News expand / collapse -----
@@ -24,7 +31,7 @@
 })();
 
 // ----- Publication filters (year + topic) -----
-(function () {
+const pubFilters = (function () {
   const filters = document.querySelectorAll('.filter');
   const pubs = Array.from(document.querySelectorAll('.pub'));
   const empty = document.getElementById('emptyState');
@@ -44,33 +51,95 @@
     empty.hidden = visible > 0;
   }
 
+  function set(type, val) {
+    state[type] = val;
+    // toggle active state within the same row
+    document
+      .querySelectorAll(`.filter[data-filter-type="${type}"]`)
+      .forEach((b) => b.classList.toggle('active', b.dataset.filter === val));
+    apply();
+  }
+
   filters.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const type = btn.dataset.filterType;
-      const val = btn.dataset.filter;
-      state[type] = val;
-      // toggle active state within the same row
-      document
-        .querySelectorAll(`.filter[data-filter-type="${type}"]`)
-        .forEach((b) => b.classList.toggle('active', b === btn));
-      apply();
-    });
+    btn.addEventListener('click', () => set(btn.dataset.filterType, btn.dataset.filter));
   });
+
+  return { reset: () => { set('year', 'all'); set('topic', 'all'); } };
 })();
 
-// ----- Smooth scroll for nav links -----
+// ----- Smooth scroll for in-page links -----
 document.querySelectorAll('a[href^="#"]').forEach((a) => {
   a.addEventListener('click', (e) => {
     const id = a.getAttribute('href');
-    if (id.length > 1) {
-      const target = document.querySelector(id);
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    if (id.length < 2) return;
+    const target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+
+    // Jumping to a paper: make sure no filter is hiding it, then flash it.
+    if (a.hasAttribute('data-pub-link')) {
+      if (target.classList.contains('hide')) pubFilters.reset();
+      target.classList.remove('flash');
+      void target.offsetWidth; // restart the animation
+      target.classList.add('flash');
+      // The publications section may not have been revealed yet.
+      const sec = target.closest('.reveal');
+      if (sec) sec.classList.add('in');
     }
+    target.scrollIntoView({ behavior: 'smooth', block: a.hasAttribute('data-pub-link') ? 'center' : 'start' });
+    history.replaceState(null, '', id);
   });
 });
+
+// ----- Scroll reveal for sections -----
+(function () {
+  const secs = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    secs.forEach((s) => s.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  secs.forEach((s) => io.observe(s));
+})();
+
+// ----- Scroll spy: highlight the nav link of the section in view -----
+(function () {
+  const links = Array.from(document.querySelectorAll('.nav-links a'));
+  const sections = links
+    .map((l) => document.querySelector(l.getAttribute('href')))
+    .filter(Boolean);
+
+  function update() {
+    const y = window.scrollY + window.innerHeight * 0.35;
+    let current = sections[0];
+    sections.forEach((s) => { if (s.offsetTop <= y) current = s; });
+    // At the very bottom, the last section wins even if it is short.
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+      current = sections[sections.length - 1];
+    }
+    links.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + current.id));
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
+// ----- Back to top -----
+(function () {
+  const btn = document.getElementById('toTop');
+  if (!btn) return;
+  const toggle = () => btn.classList.toggle('show', window.scrollY > 700);
+  window.addEventListener('scroll', toggle, { passive: true });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    history.replaceState(null, '', location.pathname + location.search);
+  });
+  toggle();
+})();
 
 // ----- Footer year -----
 document.getElementById('year').textContent = new Date().getFullYear();

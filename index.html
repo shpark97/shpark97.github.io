@@ -5,8 +5,19 @@
   <title>Seonghwan Park | Researcher at KETI</title>
   <link rel="icon" type="image/x-icon" href="images/profile.JPG" />
   <meta name="author" content="Seonghwan Park" />
-  <meta name="description" content="Seonghwan Park — researcher at KETI. Optimization, multi-modal foundation models, 3D vision, physical AI." />
+  <meta name="description" content="Seonghwan Park, researcher at KETI. Efficiency and robustness in vision and machine learning through optimization, now applied to 3D vision and physical AI." />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Set the theme before first paint so a stored choice never flashes. -->
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (['white', 'light', 'dark'].indexOf(t) < 0) t = 'white';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.classList.add('js');
+    })();
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,7 +27,7 @@
 </head>
 
 <body>
-  <!-- Aurora background -->
+  <!-- Aurora background (cream and dark themes only) -->
   <div class="aurora" aria-hidden="true">
     <span class="blob b1"></span>
     <span class="blob b2"></span>
@@ -32,15 +43,17 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="#about">About</a>
       <a href="#news">News</a>
+      <a href="#research">Research</a>
       <a href="#publications">Publications</a>
       <a href="#experience">Experience</a>
       <a href="#education">Education</a>
       <a href="#more">More</a>
     </nav>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-      <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
+    <div class="theme-switch" role="radiogroup" aria-label="Color theme">
+      <button type="button" role="radio" data-theme-choice="white" title="White" aria-label="White theme"><span class="swatch sw-white"></span></button>
+      <button type="button" role="radio" data-theme-choice="light" title="Cream" aria-label="Cream theme"><span class="swatch sw-cream"></span></button>
+      <button type="button" role="radio" data-theme-choice="dark" title="Dark" aria-label="Dark theme"><span class="swatch sw-dark"></span></button>
+    </div>
   </header>
 
   <main class="container" id="top">
@@ -56,14 +69,15 @@
         <p class="lead">
           I'm a researcher at the
           <a href="https://www.keti.re.kr/main/main.php">Korea Electronics Technology Institute (KETI)</a>,
-          working with <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Dr. Min-Gyu Park</a>.
-          Before this, I received my M.S. from <strong>POSTECH</strong> under
-          <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a>.
+          working with <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Dr. Min-Gyu Park</a>
+          on 3D vision and physical AI.
+          I received my M.S. in Artificial Intelligence from <strong>POSTECH</strong> under
+          <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a>, where I studied optimization for deep learning.
         </p>
         <p class="lead muted">
-          My research studies model <strong>efficiency</strong> and <strong>robustness</strong>
-          through the lens of <em>optimization</em>.
-          I now bring this perspective to <strong>3D vision</strong> and <strong>physical AI</strong>.
+          I'm broadly interested in <strong>efficiency</strong> and <strong>robustness</strong> in vision and machine learning,
+          which I approach through the lens of <em>optimization</em>.
+          I now carry this lens into <strong>3D vision</strong> and <strong>physical AI</strong>.
         </p>
 
         <div class="interests">
@@ -78,7 +92,7 @@
         </div>
 
         <div class="contact-row">
-          <a class="chip" href="mailto:shpark97@postech.ac.kr">
+          <a class="chip" href="mailto:shpark97@keti.re.kr">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
             Email
           </a>
@@ -90,7 +104,7 @@
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v8M8 7v.01M12 18v-5a2 2 0 0 1 4 0v5M12 13v5"/></svg>
             LinkedIn
           </a>
-          <a class="chip" href="cv.pdf" target="_blank" rel="noopener">
+          <a class="chip chip-primary" href="cv.pdf" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
             CV
           </a>
@@ -108,7 +122,7 @@
     </section>
 
     <!-- NEWS -->
-    <section class="section" id="news">
+    <section class="section reveal" id="news">
       <div class="section-head">
         <h2><span class="num">01</span> News</h2>
         <button class="toggle-news" id="toggleNews" aria-expanded="false">Show all</button>
@@ -126,10 +140,58 @@
       </ul>
     </section>
 
-    <!-- PUBLICATIONS -->
-    <section class="section" id="publications">
+    <!-- RESEARCH -->
+    <section class="section reveal" id="research">
       <div class="section-head">
-        <h2><span class="num">02</span> Publications</h2>
+        <h2><span class="num">02</span> Research</h2>
+      </div>
+
+      <p class="thesis">
+        How a model reaches its optimum sets the <em>cost</em> of learning,
+        and which optimum it reaches sets how well it <em>generalizes</em>.
+      </p>
+
+      <div class="research-grid">
+        <article class="r-card">
+          <div class="r-icon" aria-hidden="true">◇</div>
+          <h3>Learning without gradients</h3>
+          <p>Derivative-free and forward-only optimization for models that are black boxes or too costly to backpropagate through.</p>
+          <ul class="r-papers">
+            <li><a href="#pub-zip" data-pub-link>ZIP <span>ICLR 2025</span></a></li>
+            <li><a href="#pub-fedfwd" data-pub-link>FedFwd <span>ICML-W 2023</span></a></li>
+            <li><a href="#pub-cando" data-pub-link>CanDO <span>WACV 2027</span></a></li>
+          </ul>
+        </article>
+
+        <article class="r-card">
+          <div class="r-icon" aria-hidden="true">▽</div>
+          <h3>Flatness &amp; robustness</h3>
+          <p>Loss-landscape flatness as a lever for robustness to noisy labels and for efficient out-of-distribution detection.</p>
+          <ul class="r-papers">
+            <li><a href="#pub-fold" data-pub-link>FOLD <span>ECCV 2026</span></a></li>
+            <li><a href="#pub-cbm" data-pub-link>Noisy CBMs <span>NeurIPS 2025</span></a></li>
+            <li><a href="#pub-sam" data-pub-link>SAM at scale <span>ICML-W 2023</span></a></li>
+          </ul>
+        </article>
+
+        <article class="r-card">
+          <div class="r-icon" aria-hidden="true">△</div>
+          <h3>3D vision &amp; physical AI</h3>
+          <p>Reconstructing humans and their interactions with objects from monocular input, toward robotics grounded in vision priors.</p>
+          <ul class="r-papers">
+            <li><a href="#pub-hoi" data-pub-link>Human-object recon. <span>Under review</span></a></li>
+            <li><a href="#pub-jacobian" data-pub-link>JacobianAvatar <span>ECCV 2026</span></a></li>
+            <li><a href="#pub-cando" data-pub-link>CanDO <span>WACV 2027</span></a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- PUBLICATIONS -->
+    <section class="section reveal" id="publications">
+      <div class="section-head">
+        <h2><span class="num">03</span> Publications</h2>
+        <a class="head-link" href="https://scholar.google.com/citations?user=cBCB-e8AAAAJ&hl=ko">Google Scholar ↗</a>
       </div>
 
       <div class="filters" role="group" aria-label="Publication filters">
@@ -153,99 +215,121 @@
 
       <ul class="pub-list" id="pubList">
 
-        <li class="pub" data-year="2027" data-topic="3d optimization">
+        <li class="pub" id="pub-hoi" data-year="2027" data-topic="3d optimization">
           <figure class="pub-thumb" data-full="images/pubs/hoi.png" data-caption="Reconstructing a person together with the object they interact with from a single image is challenging for two reasons: the contact surfaces are occluded, and a rigidly skinned parametric hand cannot capture realistic grasps. We generate complementary virtual views and use their consensus to initialize the arrangement, then optimize it for physical consistency with a semi-rigid hand. An example shows the input image, followed by the reconstruction from the front view and a close-up of the hand." role="button" tabindex="0" aria-label="Enlarge figure: An input photograph of a person lifting a ball overhead, with the reconstructed 3D human and ball shown from the front and as a hand close-up">
             <img src="images/pubs/hoi-thumb.png" alt="An input photograph of a person lifting a ball overhead, with the reconstructed 3D human and ball shown from the front and as a hand close-up" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
-            <h3 class="pub-title">Reconstructing Physically Plausible Human-Object Interaction from a Single Image <span class="tentative">tentative title</span></h3>
+            <h3 class="pub-title">Monocular 3D Human-Object Reconstruction via Generative View Consensus and Semi-Rigid Grasping</h3>
             <p class="authors"><u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=37rgddAAAAAJ&hl=ko">Yong-Hoon Kwon</a>, <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Min-Gyu Park</a></p>
-            <p class="venue">Under review</p>
-            <div class="tags"><span class="tag">3D Vision</span><span class="tag">Optimization</span></div>
+            <p class="venue"><span class="badge badge-review">Under review</span></p>
+            <div class="pub-foot">
+              <div class="tags"><span class="tag">3D Vision</span><span class="tag">Optimization</span></div>
+            </div>
           </div>
         </li>
 
-        <li class="pub" data-year="2027" data-topic="3d robustness optimization">
+        <li class="pub" id="pub-cando" data-year="2027" data-topic="3d robustness optimization">
           <figure class="pub-thumb" data-full="images/pubs/point.png" data-caption="Point cloud models are increasingly deployed through score-only <em>black-box</em> interfaces, where rotations outside the training distribution can severely degrade accuracy, while retraining and gradient-based adaptation remain unavailable. CanDO canonicalizes inputs using forward queries alone, searching SO(3) for the rotation that maximizes model confidence. Left to right, coloured by ground-truth parts: the misoriented input, the pose recovered by CanDO, and the upright target." role="button" tabindex="0" aria-label="Enlarge figure: Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by ground-truth parts">
             <img src="images/pubs/point-thumb.png" alt="Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by ground-truth parts" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title">Recovering Black-Box Point Cloud Models from Pose Shifts via Derivative-Free Optimization</h3>
             <p class="authors"><u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Min-Gyu Park</a></p>
-            <p class="venue">WACV 2027<span class="venue-note">Accepted as a Round 1 paper</span></p>
-            <div class="tags"><span class="tag">3D Vision</span><span class="tag">Robustness</span><span class="tag">Optimization</span></div>
+            <p class="venue"><span class="badge badge-conf">WACV 2027</span><span class="venue-note">Accepted as a Round 1 paper</span></p>
+            <div class="pub-foot">
+              <div class="tags"><span class="tag">3D Vision</span><span class="tag">Robustness</span><span class="tag">Optimization</span></div>
+            </div>
           </div>
         </li>
 
-        <li class="pub" data-year="2026" data-topic="robustness efficiency">
+        <li class="pub" id="pub-fold" data-year="2026" data-topic="robustness efficiency">
           <figure class="pub-thumb" data-full="images/pubs/ood.svg" data-caption="Empirical spectral densities of the feature Hessian on CIFAR-10 and ImageNet-200. Curvature increases monotonically with distribution-shift severity: the largest eigenvalue rises from ID to near-OOD and then far-OOD samples. FOLD leverages this separation for detection, scoring samples directly from the feature Hessian at approximately the cost of a standard forward pass." role="button" tabindex="0" aria-label="Enlarge figure: Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data">
             <img src="images/pubs/ood-thumb.png" alt="Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2606.29952">Exploiting Local Flatness for Efficient Out-of-Distribution Detection</a></h3>
             <p class="authors"><u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=hl4jLS4gDRUC&hl=ko">Hyunji Jung</a>, <a href="https://dongyeoplee2.github.io/">Dongyeop Lee</a>, <a href="https://namhoonlee.github.io/">Namhoon Lee</a></p>
-            <p class="venue">ECCV 2026</p>
-            <div class="tags"><span class="tag">Robustness</span><span class="tag">Efficiency</span></div>
+            <p class="venue"><span class="badge badge-conf">ECCV 2026</span></p>
+            <div class="pub-foot">
+              <a class="pub-link" href="https://arxiv.org/abs/2606.29952">arXiv</a>
+              <div class="tags"><span class="tag">Robustness</span><span class="tag">Efficiency</span></div>
+            </div>
           </div>
         </li>
 
-        <li class="pub" data-year="2026" data-topic="3d optimization">
+        <li class="pub" id="pub-jacobian" data-year="2026" data-topic="3d optimization">
           <figure class="pub-thumb" data-full="images/pubs/jacobian.png" data-caption="A digital human avatar reconstructed from a monocular video, shown throughout the motion sequence as rendered colour images paired with normal maps. Hierarchical neural Jacobian fields capture both rigid articulation and non-rigid local deformations while maintaining temporal geometric consistency." role="button" tabindex="0" aria-label="Enlarge figure: An animated human avatar shown as paired photo-realistic renders and normal maps along a motion sequence">
             <img src="images/pubs/jacobian-thumb.png" alt="An animated human avatar shown as paired photo-realistic renders and normal maps along a motion sequence" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2606.31115v1">JacobianAvatar: Temporally Consistent Semi-rigid Avatar Reconstruction from a Monocular Video</a></h3>
             <p class="authors"><a href="https://scholar.google.com/citations?user=Qj-P_RIAAAAJ&hl=ko">Changyeon Won</a>, <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Min-Gyu Park</a>, <u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=Y4mReV4AAAAJ&hl=en">Ju Hong Yoon</a>, <a href="https://sites.google.com/site/hgjeoncv/home">Hae-Gon Jeon</a></p>
-            <p class="venue">ECCV 2026</p>
-            <div class="tags"><span class="tag">3D Vision</span><span class="tag">Optimization</span></div>
+            <p class="venue"><span class="badge badge-conf">ECCV 2026</span></p>
+            <div class="pub-foot">
+              <a class="pub-link" href="https://arxiv.org/abs/2606.31115v1">arXiv</a>
+              <div class="tags"><span class="tag">3D Vision</span><span class="tag">Optimization</span></div>
+            </div>
           </div>
         </li>
 
-        <li class="pub" data-year="2025" data-topic="robustness optimization">
+        <li class="pub" id="pub-cbm" data-year="2025" data-topic="robustness optimization">
           <figure class="pub-thumb" data-full="images/pubs/cbm.png" data-caption="Concept bottleneck models first predict human-readable concepts, then derive the class label solely from those concepts, making their reasoning accessible through the concept layer. This interpretability, however, depends on a clean concept layer. Shown here is a t-SNE visualization of the CUB embedding learned for the <em>blue upperparts</em> concept, where &gamma; denotes the fraction of concept annotations corrupted during training. With clean supervision (&gamma;&nbsp;=&nbsp;0.0), samples with and without the concept form distinct clusters; after flipping 40% of labels (&gamma;&nbsp;=&nbsp;0.4), the clusters collapse, rendering the concept uninterpretable." role="button" tabindex="0" aria-label="Enlarge figure: t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling">
             <img src="images/pubs/cbm-thumb.png" alt="t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2505.16705">An Analysis of Concept Bottleneck Models: Measuring, Understanding, and Mitigating the Impact of Noisy Annotations</a></h3>
             <p class="authors"><u>Seonghwan Park</u>, <a href="https://moon1x21.github.io/">Jueun Mun</a>, Donghyun Oh, <a href="https://namhoonlee.github.io/">Namhoon Lee</a></p>
-            <p class="venue">NeurIPS 2025</p>
-            <div class="tags"><span class="tag">Interpretability</span><span class="tag">Robustness</span><span class="tag">Optimization</span></div>
+            <p class="venue"><span class="badge badge-conf">NeurIPS 2025</span></p>
+            <div class="pub-foot">
+              <a class="pub-link" href="https://arxiv.org/abs/2505.16705">arXiv</a>
+              <div class="tags"><span class="tag">Interpretability</span><span class="tag">Robustness</span><span class="tag">Optimization</span></div>
+            </div>
           </div>
         </li>
 
-        <li class="pub" data-year="2025" data-topic="optimization efficiency">
+        <li class="pub" id="pub-zip" data-year="2025" data-topic="optimization efficiency">
           <figure class="pub-thumb" data-full="images/pubs/zip.svg" data-caption="Large vision-language models are often available only through <em>black-box</em> prediction APIs, making adaptation a query-intensive process of prompt tuning without gradients, where every call incurs a cost. ZIP reduces the required queries by reparameterizing prompts in a low-rank form and clipping its zeroth-order gradient estimates. Averaged across 13 vision-language tasks, ZIP reaches the target accuracy using roughly half as many queries as the strongest baseline (left) and achieves comparable training accuracy about 8&times; sooner (right)." role="button" tabindex="0" aria-label="Enlarge figure: Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines">
             <img src="images/pubs/zip-thumb.png" alt="Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2504.06838">ZIP: An Efficient Zeroth-order Prompt Tuning for Black-box Vision-Language Models</a></h3>
             <p class="authors"><u>Seonghwan Park</u>, Jaehyeon Jeong, Yongjun Kim, <a href="https://jaeho-lee.github.io/">Jaeho Lee</a>, <a href="https://namhoonlee.github.io/">Namhoon Lee</a></p>
-            <p class="venue">ICLR 2025</p>
-            <div class="tags"><span class="tag">Optimization</span><span class="tag">Efficiency</span></div>
+            <p class="venue"><span class="badge badge-conf">ICLR 2025</span></p>
+            <div class="pub-foot">
+              <a class="pub-link" href="https://arxiv.org/abs/2504.06838">arXiv</a>
+              <div class="tags"><span class="tag">Optimization</span><span class="tag">Efficiency</span></div>
+            </div>
           </div>
         </li>
 
-        <li class="pub" data-year="2023" data-topic="optimization efficiency">
+        <li class="pub" id="pub-fedfwd" data-year="2023" data-topic="optimization efficiency">
           <figure class="pub-thumb" data-full="images/pubs/fedfwd.svg" data-caption="FedFwd replaces backpropagation with the Forward-Forward algorithm&rsquo;s layer-wise local updates, eliminating the need for clients to store intermediate activations. It enables federated training on memory-constrained edge devices. On MNIST, test accuracy over communication rounds shows that FedFwd closely tracks FedAvg with i.i.d. client data, while converging more slowly and with higher variance in the non-i.i.d. setting." role="button" tabindex="0" aria-label="Enlarge figure: Test accuracy versus communication rounds on MNIST for FedFwd and FedAvg, under i.i.d. and non-i.i.d. client data">
             <img src="images/pubs/fedfwd-thumb.png" alt="Test accuracy versus communication rounds on MNIST for FedFwd and FedAvg, under i.i.d. and non-i.i.d. client data" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2309.01150">FedFwd: Federated Learning without Backpropagation</a></h3>
             <p class="authors"><u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=9gOOE7MAAAAJ&hl=en">Dahun Shin</a>, Jinseok Chung, <a href="https://namhoonlee.github.io/">Namhoon Lee</a></p>
-            <p class="venue">ICML 2023 Workshop</p>
-            <div class="tags"><span class="tag">Optimization</span><span class="tag">Efficiency</span></div>
+            <p class="venue"><span class="badge badge-ws">ICML 2023 Workshop</span><span class="venue-full">Federated Learning and Analytics in Practice</span></p>
+            <div class="pub-foot">
+              <a class="pub-link" href="https://arxiv.org/abs/2309.01150">arXiv</a>
+              <div class="tags"><span class="tag">Optimization</span><span class="tag">Efficiency</span></div>
+            </div>
           </div>
         </li>
 
-        <li class="pub" data-year="2023" data-topic="optimization">
+        <li class="pub" id="pub-sam" data-year="2023" data-topic="optimization">
           <figure class="pub-thumb" data-full="images/pubs/sam.svg" data-caption="Test accuracy as a function of mini-batch size for SGD and SAM on a ResNet. The two methods perform comparably at small batch sizes, but as the mini-batch grows, SGD degrades sharply and erratically, whereas SAM remains robust." role="button" tabindex="0" aria-label="Enlarge figure: Test accuracy versus mini-batch size for SGD and SAM on a ResNet">
             <img src="images/pubs/sam-thumb.png" alt="Test accuracy versus mini-batch size for SGD and SAM on a ResNet" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://icml.cc/virtual/2023/25899">On the Effectiveness of Sharpness-Aware Minimization with Large Mini-batches</a></h3>
             <p class="authors">Jinseok Chung, <u>Seonghwan Park</u>, <a href="https://jaeho-lee.github.io/">Jaeho Lee</a>, <a href="https://namhoonlee.github.io/">Namhoon Lee</a></p>
-            <p class="venue">ICML 2023 Workshop</p>
-            <div class="tags"><span class="tag">Optimization</span></div>
+            <p class="venue"><span class="badge badge-ws">ICML 2023 Workshop</span><span class="venue-full">High-dimensional Learning Dynamics</span></p>
+            <div class="pub-foot">
+              <a class="pub-link" href="https://icml.cc/virtual/2023/25899">Paper</a>
+              <div class="tags"><span class="tag">Optimization</span></div>
+            </div>
           </div>
         </li>
       </ul>
@@ -253,46 +337,50 @@
     </section>
 
     <!-- EXPERIENCE -->
-    <section class="section" id="experience">
+    <section class="section reveal" id="experience">
       <div class="section-head">
-        <h2><span class="num">03</span> Experience</h2>
+        <h2><span class="num">04</span> Experience</h2>
       </div>
 
       <div class="timeline">
 
-        <article class="tl-item">
+        <article class="tl-item is-current">
           <div class="tl-dot"></div>
-          <div class="tl-date">Jan 2026 — present</div>
+          <div class="tl-date">Jan 2026 — present <span class="now">Now</span></div>
           <div class="tl-body">
             <h3>Researcher · <a href="https://www.keti.re.kr/main/main.php">KETI</a></h3>
             <p>3D vision &amp; physical AI.<br>Supervisor: <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Dr. Min-Gyu Park</a>.</p>
+            <p class="tl-focus">Currently working toward unified and generalizable monocular 3D hand-object interaction reconstruction.</p>
+            <p class="tl-refs"><a href="#pub-hoi" data-pub-link>Human-object recon.</a><a href="#pub-cando" data-pub-link>CanDO</a><a href="#pub-jacobian" data-pub-link>JacobianAvatar</a></p>
           </div>
         </article>
 
         <article class="tl-item">
           <div class="tl-dot"></div>
-          <div class="tl-date">Aug 2025 — Dec 2025</div>
+          <div class="tl-date">Jan 2023 — Dec 2025</div>
           <div class="tl-body">
             <h3>Research Assistant · <a href="https://opt.postech.ac.kr/">Computational Optimization Lab, POSTECH</a></h3>
-            <p>Efficiency &amp; robustness through optimization.<br>Supervisor: <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a>.</p>
+            <p>Model efficiency &amp; robustness through optimization.<br>Supervisor: <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a>.</p>
+            <p class="tl-refs"><a href="#pub-zip" data-pub-link>ZIP</a><a href="#pub-cbm" data-pub-link>Noisy CBMs</a><a href="#pub-fold" data-pub-link>FOLD</a><a href="#pub-fedfwd" data-pub-link>FedFwd</a><a href="#pub-sam" data-pub-link>SAM at scale</a></p>
           </div>
         </article>
 
-        <article class="tl-item">
+        <article class="tl-item is-sub">
           <div class="tl-dot"></div>
           <div class="tl-date">Jun 2025 — Nov 2025</div>
           <div class="tl-body">
             <h3>Samsung Research Project</h3>
-            <p>MMFM for anomaly detection.</p>
+            <p>Multi-modal foundation models for anomaly detection.</p>
           </div>
         </article>
 
-        <article class="tl-item">
+        <article class="tl-item is-sub">
           <div class="tl-dot"></div>
           <div class="tl-date">Jun 2024 — May 2025</div>
           <div class="tl-body">
-            <h3>Samsung Advanced Institute of Technology Project</h3>
-            <p>Visual prompting for MMFM-based VQA.</p>
+            <h3>Samsung Advanced Institute of Technology (SAIT) Project</h3>
+            <p>Visual prompting for MMFM-based visual question answering.</p>
+            <p class="tl-refs"><a href="#pub-zip" data-pub-link>ZIP</a></p>
           </div>
         </article>
 
@@ -308,65 +396,96 @@
     </section>
 
     <!-- EDUCATION -->
-    <section class="section" id="education">
+    <section class="section reveal" id="education">
       <div class="section-head">
-        <h2><span class="num">04</span> Education</h2>
+        <h2><span class="num">05</span> Education</h2>
       </div>
 
-      <div class="timeline">
-        <article class="tl-item">
-          <div class="tl-dot"></div>
-          <div class="tl-date">Mar 2023 — Aug 2025</div>
-          <div class="tl-body">
-            <h3>M.S. in Artificial Intelligence · POSTECH</h3>
-            <p>GPA 3.9 / 4.0 (4.0 / 4.3).<br>Advised by <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a>.</p>
-          </div>
+      <div class="edu-grid">
+        <article class="edu-card">
+          <div class="edu-date">Mar 2023 — Aug 2025</div>
+          <h3>POSTECH</h3>
+          <p class="edu-degree">M.S. in Artificial Intelligence</p>
+          <p>Advised by <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a></p>
+          <p class="edu-gpa">GPA 3.9 / 4.0 <span>(4.0 / 4.3)</span></p>
         </article>
 
-        <article class="tl-item">
-          <div class="tl-dot"></div>
-          <div class="tl-date">Mar 2017 — Feb 2023</div>
-          <div class="tl-body">
-            <h3>B.S. in Computer Science &amp; Engineering · Hanyang University</h3>
-            <p>GPA 3.82 / 4.0 (4.12 / 4.5).<br>summa cum laude.</p>
-          </div>
+        <article class="edu-card">
+          <div class="edu-date">Mar 2017 — Feb 2023</div>
+          <h3>Hanyang University</h3>
+          <p class="edu-degree">B.S. in Computer Science</p>
+          <p><span class="honor">summa cum laude</span></p>
+          <p class="edu-gpa">GPA 3.82 / 4.0 <span>(4.12 / 4.5)</span></p>
         </article>
       </div>
     </section>
 
-    <!-- MORE: teaching, awards, service -->
-    <section class="section" id="more">
+    <!-- MORE: awards, patents, teaching, service -->
+    <section class="section reveal" id="more">
       <div class="section-head">
-        <h2><span class="num">05</span> Teaching, Awards &amp; Service</h2>
+        <h2><span class="num">06</span> Awards, Patents, Teaching &amp; Service</h2>
       </div>
 
-      <div class="grid-3">
-        <div class="card">
-          <h3>Teaching</h3>
-          <ul class="card-list">
-            <li>
-              <strong>POSTECH</strong> · TA
-              <span class="meta">Sep — Dec 2024</span>
-              <p>Introduction to Artificial Intelligence</p>
-            </li>
-            <li>
-              <strong>POSCO AI Fellowship</strong> · TA
-              <span class="meta">May — Jun 2023</span>
-              <p>Deep Learning</p>
-            </li>
-          </ul>
-        </div>
-
+      <div class="grid-2">
         <div class="card">
           <h3>Honors &amp; Awards</h3>
           <ul class="card-list">
+            <li>
+              <strong>NeurIPS 2025 Travel Grant</strong>
+              <span class="meta">2025</span>
+            </li>
             <li>
               <strong>CKAIA Best Paper Finalist</strong>
               <span class="meta">2025</span>
             </li>
             <li>
-              <strong>HYU Academic Excellence</strong> · top 3%
+              <strong>HYU Academic Excellence Award</strong> · top 3%
               <span class="meta">2022</span>
+            </li>
+            <li>
+              <strong>Merit-based Scholarship</strong> · Hanyang University
+              <span class="meta">2022</span>
+            </li>
+            <li>
+              <strong>Career-based Scholarship</strong> · Hanyang University, 4 semesters
+              <span class="meta">2017 — 2018</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Patents</h3>
+          <ul class="card-list">
+            <li>
+              <strong>A Method for Generating Data, Obtaining Data and an Electronic Apparatus Performing the Same</strong>
+              <p>Hyunjeong Lee, <u>Seonghwan Park</u>, Namhoon Lee, Jaehyeon Jeong, Seungin Park</p>
+              <span class="meta">Under registration review · KR</span>
+            </li>
+            <li>
+              <strong>Electronic Device for Training Artificial Intelligence Model in Black Box Environment by Using Prompts and Operating Method of the Same</strong>
+              <p>Namhoon Lee, Jaeho Lee, <u>Seonghwan Park</u>, Jaehyeon Jeong, Yongjun Kim</p>
+              <span class="meta">Under registration review · US &amp; KR</span>
+            </li>
+            <li>
+              <strong>Apparatus and Method for Reducing the Impact of Label Noise on the Prediction Accuracy of a Conceptual Bottleneck Model</strong>
+              <p>Namhoon Lee, <u>Seonghwan Park</u>, Jueun Mun</p>
+              <span class="meta">Under registration review · US &amp; KR</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Teaching</h3>
+          <ul class="card-list">
+            <li>
+              <strong>POSTECH</strong> · Teaching Assistant
+              <p>Introduction to Artificial Intelligence</p>
+              <span class="meta">Sep — Dec 2024</span>
+            </li>
+            <li>
+              <strong>POSCO AI Fellowship</strong> · Teaching Assistant
+              <p>Deep Learning</p>
+              <span class="meta">May — Jun 2023</span>
             </li>
           </ul>
         </div>
@@ -375,11 +494,12 @@
           <h3>Service</h3>
           <ul class="card-list">
             <li>
-              <strong>Reviewer</strong> · ICLR, ECCV, NeurIPS, TMLR
-              <span class="meta">2026</span>
+              <strong>Reviewer</strong>
+              <p class="venue-chips"><span>ICLR 2026</span><span>ECCV 2026</span><span>NeurIPS 2026</span><span>WACV 2027</span><span>TMLR</span></p>
             </li>
             <li>
-              <strong>ROKAF Logistics Command</strong> · Sergeant
+              <strong>Republic of Korea Air Force</strong> · Sergeant
+              <p>Logistics Command, military service</p>
               <span class="meta">Oct 2018 — Aug 2020</span>
             </li>
           </ul>
@@ -388,9 +508,13 @@
     </section>
 
     <footer class="footer">
-      <p>© <span id="year"></span> Seonghwan Park</p>
+      <p>© <span id="year"></span> Seonghwan Park · Last updated Oct 2026</p>
     </footer>
   </main>
+
+  <button class="to-top" id="toTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 
   <!-- Figure lightbox -->
   <div class="lightbox" id="lightbox" hidden>
