@@ -193,8 +193,9 @@
       <ul class="pub-list" id="pubList">
 
         <li class="pub" id="pub-cando" data-year="2027" data-topic="3d robustness optimization">
-          <figure class="pub-thumb" data-full="images/pubs/point.png" data-caption="Point cloud models are increasingly deployed through score-only <em>black-box</em> interfaces, where rotations outside the training distribution can severely degrade accuracy, while retraining and gradient-based adaptation remain unavailable. CanDO canonicalizes inputs using forward queries alone, searching SO(3) for the rotation that maximizes model confidence. Left to right, coloured by ground-truth parts: the misoriented input, the pose recovered by CanDO, and the upright target." role="button" tabindex="0" aria-label="Enlarge figure: Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by ground-truth parts">
+          <figure class="pub-thumb" data-full="images/pubs/point.png" data-live="candoLightbox" data-caption="Point cloud models are increasingly deployed through score-only <em>black-box</em> interfaces, where rotations outside the training distribution can severely degrade accuracy, while retraining and gradient-based adaptation remain unavailable. CanDO canonicalizes inputs using forward queries alone, searching SO(3) for the rotation that maximizes model confidence. Left to right: the misoriented input and the pose recovered by CanDO, coloured by the parts a frozen PointNet++ predicts, and the upright target with its reference parts." role="button" tabindex="0" aria-label="Enlarge figure: Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by parts">
             <img src="images/pubs/point-thumb.png" srcset="images/pubs/point-thumb-480.png 480w, images/pubs/point-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by ground-truth parts" loading="lazy" decoding="async" />
+            <div class="live-fig" id="candoThumb" aria-hidden="true"></div>
           </figure>
           <div class="pub-body">
             <h3 class="pub-title">Recovering Black-Box Point Cloud Models from Pose Shifts via Derivative-Free Optimization</h3>
@@ -209,8 +210,9 @@
         </li>
 
         <li class="pub" id="pub-fold" data-year="2026" data-topic="robustness efficiency">
-          <figure class="pub-thumb" data-full="images/pubs/ood.svg" data-caption="Empirical spectral densities of the feature Hessian on CIFAR-10 and ImageNet-200. Curvature increases monotonically with distribution-shift severity: the largest eigenvalue rises from ID to near-OOD and then far-OOD samples. FOLD leverages this separation for detection, scoring samples directly from the feature Hessian at approximately the cost of a standard forward pass." role="button" tabindex="0" aria-label="Enlarge figure: Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data">
+          <figure class="pub-thumb" data-full="images/pubs/ood.svg" data-live="foldLightbox" data-caption="Empirical spectral densities of the feature Hessian on CIFAR-10 and ImageNet-200. Curvature increases monotonically with distribution-shift severity: the largest eigenvalue rises from ID to near-OOD and then far-OOD samples. FOLD leverages this separation for detection, scoring samples directly from the feature Hessian at approximately the cost of a standard forward pass." role="button" tabindex="0" aria-label="Enlarge figure: Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data">
             <img src="images/pubs/ood-thumb.png" srcset="images/pubs/ood-thumb-480.png 480w, images/pubs/ood-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data" loading="lazy" decoding="async" />
+            <div class="live-fig" id="foldThumb" aria-hidden="true"></div>
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2606.29952">Exploiting Local Flatness for Efficient Out-of-Distribution Detection</a></h3>
@@ -227,6 +229,7 @@
         <li class="pub" id="pub-jacobian" data-year="2026" data-topic="3d optimization">
           <figure class="pub-thumb" data-full="images/pubs/jacobian.png" data-caption="A digital human avatar reconstructed from a monocular video, shown throughout the motion sequence as rendered colour images paired with normal maps. Hierarchical neural Jacobian fields capture both rigid articulation and non-rigid local deformations while maintaining temporal geometric consistency." role="button" tabindex="0" aria-label="Enlarge figure: An animated human avatar shown as paired photo-realistic renders and normal maps along a motion sequence">
             <img src="images/pubs/jacobian-thumb.png" srcset="images/pubs/jacobian-thumb-480.png 480w, images/pubs/jacobian-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="An animated human avatar shown as paired photo-realistic renders and normal maps along a motion sequence" loading="lazy" decoding="async" />
+            <video class="thumb-video" data-src="images/pubs/jacobian.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2606.31115v1">JacobianAvatar: Temporally Consistent Semi-rigid Avatar Reconstruction from a Monocular Video</a></h3>
@@ -241,8 +244,9 @@
         </li>
 
         <li class="pub" id="pub-cbm" data-year="2025" data-topic="robustness optimization">
-          <figure class="pub-thumb" data-full="images/pubs/cbm.png" data-caption="Concept bottleneck models first predict human-readable concepts, then derive the class label solely from those concepts, making their reasoning accessible through the concept layer. This interpretability, however, depends on a clean concept layer. Shown here is a t-SNE visualization of the CUB embedding learned for the <em>blue upperparts</em> concept, where &gamma; denotes the fraction of concept annotations corrupted during training. With clean supervision (&gamma;&nbsp;=&nbsp;0.0), samples with and without the concept form distinct clusters; after flipping 40% of labels (&gamma;&nbsp;=&nbsp;0.4), the clusters collapse, rendering the concept uninterpretable." role="button" tabindex="0" aria-label="Enlarge figure: t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling">
+          <figure class="pub-thumb" data-full="images/pubs/cbm.png" data-live="cbmLightbox" data-caption="Concept bottleneck models first predict human-readable concepts, then derive the class label solely from those concepts, making their reasoning accessible through the concept layer. This interpretability, however, depends on a clean concept layer. Shown here is a t-SNE visualization of the CUB embedding learned for the <em>blue upperparts</em> concept, where the noise rate is the fraction of concept annotations corrupted during training. With clean supervision (0% noise), samples with and without the concept form distinct clusters; as the noise rate grows to 40%, images with the concept scatter among those without it and the clusters collapse, rendering the concept uninterpretable." role="button" tabindex="0" aria-label="Enlarge figure: t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling">
             <img src="images/pubs/cbm-thumb.png" srcset="images/pubs/cbm-thumb-480.png 480w, images/pubs/cbm-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling" loading="lazy" decoding="async" />
+            <div class="live-fig" id="cbmThumb" aria-hidden="true"></div>
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2505.16705">An Analysis of Concept Bottleneck Models: Measuring, Understanding, and Mitigating the Impact of Noisy Annotations</a></h3>
@@ -402,11 +406,17 @@
       </button>
       <div class="lightbox-fig">
         <img id="lightboxImg" src="" alt="" />
+        <div class="live-fig is-big is-orbit" id="candoLightbox" hidden></div>
+        <div class="live-fig is-big is-pair is-esd" id="foldLightbox" hidden></div>
+        <div class="live-fig is-big is-pair" id="cbmLightbox" hidden></div>
         <p class="lightbox-caption" id="lightboxCaption"></p>
       </div>
     </div>
   </div>
 
+  <script src="images/pubs/cando-airplane.js"></script>
+  <script src="images/pubs/fold-esd.js"></script>
+  <script src="images/pubs/cbm-noise.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
