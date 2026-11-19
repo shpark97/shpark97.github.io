@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Seonghwan Park | Researcher at KETI</title>
-  <link rel="icon" type="image/x-icon" href="images/profile.JPG" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
   <meta name="author" content="Seonghwan Park" />
   <meta name="description" content="Seonghwan Park, researcher at KETI. Efficiency and robustness in vision and machine learning through optimization, now applied to 3D vision and physical AI." />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheet.css?v=20261119a" />
 </head>
 
 <body>
@@ -74,7 +74,7 @@
         </p>
         <p class="lead muted">
           I'm broadly interested in <strong>efficiency</strong> and <strong>robustness</strong> in vision and machine learning,
-          which I approach through the lens of <em>optimization</em>.
+          which I approach through <em>optimization</em> grounded in <em>understanding</em> how models behave.
           I now carry this lens into <strong>3D vision</strong> and <strong>physical AI</strong>.
         </p>
 
@@ -101,7 +101,7 @@
       <div class="hero-photo">
         <div class="photo-frame">
           <a href="images/profile.JPG">
-            <img src="images/profile.JPG" alt="Seonghwan Park" />
+            <img src="images/profile-600.jpg" width="600" height="600" alt="Seonghwan Park" />
           </a>
         </div>
         <div class="photo-glow" aria-hidden="true"></div>
@@ -135,31 +135,30 @@
 
       <div class="research-grid">
         <article class="r-card">
-          <h3>Learning without gradients</h3>
-          <p>Derivative-free and forward-only optimization for models that are black boxes or too costly to backpropagate through.</p>
+          <h3>3D vision &amp; Physical AI</h3>
+          <p>Recovering and generating 3D humans, hands and objects, and the physical interactions between them.</p>
           <ul class="r-papers">
-            <li><a href="#pub-zip" data-pub-link>ZIP <span>ICLR 2025</span></a></li>
             <li><a href="#pub-cando" data-pub-link>CanDO <span>WACV 2027</span></a></li>
+            <li><a href="#pub-jacobian" data-pub-link>JacobianAvatar <span>ECCV 2026</span></a></li>
+          </ul>
+        </article>
+
+        <article class="r-card">
+          <h3>Learning without gradients</h3>
+          <p>Derivative-free and forward-only optimization for when gradients are unavailable or too costly.</p>
+          <ul class="r-papers">
+            <li><a href="#pub-cando" data-pub-link>CanDO <span>WACV 2027</span></a></li>
+            <li><a href="#pub-zip" data-pub-link>ZIP <span>ICLR 2025</span></a></li>
             <li><a href="#pub-fedfwd" data-pub-link>FedFwd <span>ICML-W 2023</span></a></li>
           </ul>
         </article>
 
         <article class="r-card">
           <h3>Flatness &amp; robustness</h3>
-          <p>Loss-landscape flatness as a lever for robustness to noisy labels and for efficient out-of-distribution detection.</p>
+          <p>Loss-landscape flatness and curvature as tools for robustness to label noise and distribution shift.</p>
           <ul class="r-papers">
             <li><a href="#pub-fold" data-pub-link>FOLD <span>ECCV 2026</span></a></li>
             <li><a href="#pub-cbm" data-pub-link>Noisy CBMs <span>NeurIPS 2025</span></a></li>
-            <li><a href="#pub-sam" data-pub-link>SAM at scale <span>ICML-W 2023</span></a></li>
-          </ul>
-        </article>
-
-        <article class="r-card">
-          <h3>3D vision &amp; physical AI</h3>
-          <p>Reconstructing humans and their interactions with objects from monocular input, toward robotics grounded in vision priors.</p>
-          <ul class="r-papers">
-            <li><a href="#pub-cando" data-pub-link>CanDO <span>WACV 2027</span></a></li>
-            <li><a href="#pub-jacobian" data-pub-link>JacobianAvatar <span>ECCV 2026</span></a></li>
           </ul>
         </article>
       </div>
@@ -184,7 +183,7 @@
           <span class="filter-label">Topic</span>
           <button class="filter active" data-filter-type="topic" data-filter="all">All</button>
           <button class="filter" data-filter-type="topic" data-filter="optimization">Optimization</button>
-          <button class="filter" data-filter-type="topic" data-filter="3d">3D / Physical AI</button>
+          <button class="filter" data-filter-type="topic" data-filter="3d">3D Vision</button>
           <button class="filter" data-filter-type="topic" data-filter="robustness">Robustness</button>
           <button class="filter" data-filter-type="topic" data-filter="efficiency">Efficiency</button>
         </div>
@@ -193,7 +192,7 @@
       <ul class="pub-list" id="pubList">
 
         <li class="pub" id="pub-cando" data-year="2027" data-topic="3d robustness optimization">
-          <figure class="pub-thumb" data-full="images/pubs/point.png" data-live="candoLightbox" data-caption="Point cloud models are increasingly deployed through score-only <em>black-box</em> interfaces, where rotations outside the training distribution can severely degrade accuracy, while retraining and gradient-based adaptation remain unavailable. CanDO canonicalizes inputs using forward queries alone, searching SO(3) for the rotation that maximizes model confidence. Left to right: the misoriented input and the pose recovered by CanDO, coloured by the parts a frozen PointNet++ predicts, and the upright target with its reference parts." role="button" tabindex="0" aria-label="Enlarge figure: Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by parts">
+          <figure class="pub-thumb" data-full="images/pubs/point-thumb.png" data-live="candoLightbox" data-caption="Point cloud models are increasingly deployed through score-only <em>black-box</em> interfaces, where rotations outside the training distribution can severely degrade accuracy, while retraining and gradient-based adaptation remain unavailable. CanDO canonicalizes inputs using forward queries alone, searching SO(3) for the rotation that maximizes model confidence." role="button" tabindex="0" aria-label="Enlarge figure: Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by parts">
             <img src="images/pubs/point-thumb.png" srcset="images/pubs/point-thumb-480.png 480w, images/pubs/point-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by ground-truth parts" loading="lazy" decoding="async" />
             <div class="live-fig" id="candoThumb" aria-hidden="true"></div>
           </figure>
@@ -211,7 +210,7 @@
         </li>
 
         <li class="pub" id="pub-fold" data-year="2026" data-topic="robustness efficiency">
-          <figure class="pub-thumb" data-full="images/pubs/ood.svg" data-live="foldLightbox" data-caption="Empirical spectral densities of the feature Hessian on CIFAR-10 and ImageNet-200. Curvature increases monotonically with distribution-shift severity: the largest eigenvalue rises from ID to near-OOD and then far-OOD samples. FOLD leverages this separation for detection, scoring samples directly from the feature Hessian at approximately the cost of a standard forward pass." role="button" tabindex="0" aria-label="Enlarge figure: Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data">
+          <figure class="pub-thumb" data-full="images/pubs/ood-thumb.png" data-live="foldLightbox" data-caption="Empirical spectral densities of the feature Hessian on CIFAR-10 and ImageNet-200. Curvature increases monotonically with distribution-shift severity: the largest eigenvalue rises from ID to near-OOD and then far-OOD samples. FOLD leverages this separation for detection, scoring samples directly from the feature Hessian at approximately the cost of a standard forward pass." role="button" tabindex="0" aria-label="Enlarge figure: Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data">
             <img src="images/pubs/ood-thumb.png" srcset="images/pubs/ood-thumb-480.png 480w, images/pubs/ood-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Spectral density of the feature Hessian on CIFAR-10 and ImageNet-200, separating ID, near-OOD and far-OOD data" loading="lazy" decoding="async" />
             <div class="live-fig" id="foldThumb" aria-hidden="true"></div>
           </figure>
@@ -231,12 +230,14 @@
           <figure class="pub-thumb" data-full="images/pubs/jacobian.png" data-caption="A digital human avatar reconstructed from a monocular video, shown throughout the motion sequence as rendered colour images paired with normal maps. Hierarchical neural Jacobian fields capture both rigid articulation and non-rigid local deformations while maintaining temporal geometric consistency." role="button" tabindex="0" aria-label="Enlarge figure: An animated human avatar shown as paired photo-realistic renders and normal maps along a motion sequence">
             <img src="images/pubs/jacobian-thumb.png" srcset="images/pubs/jacobian-thumb-480.png 480w, images/pubs/jacobian-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="An animated human avatar shown as paired photo-realistic renders and normal maps along a motion sequence" loading="lazy" decoding="async" />
             <video class="thumb-video" data-src="images/pubs/jacobian.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            <div class="thumb-labels is-at is-sm on-live" aria-hidden="true"><span style="--x:15.5%"><span class="lf-t solo">Video</span></span><span style="--x:48.7%"><span class="lf-t solo">Canonical Avatar</span></span><span style="--x:81.5%"><span class="lf-t solo">Animation</span></span></div>
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2606.31115v1">JacobianAvatar: Temporally Consistent Semi-rigid Avatar Reconstruction from a Monocular Video</a></h3>
             <p class="authors"><a href="https://scholar.google.com/citations?user=Qj-P_RIAAAAJ&hl=ko">Changyeon Won</a>, <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Min-Gyu Park</a>, <u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=Y4mReV4AAAAJ&hl=en">Ju Hong Yoon</a>, <a href="https://sites.google.com/site/hgjeoncv/home">Hae-Gon Jeon</a></p>
             <p class="venue"><span class="badge badge-conf">ECCV 2026</span></p>
             <div class="pub-foot">
+              <a class="pub-link" href="https://wcy199705.github.io/JacobianAvatar/">Project</a>
               <a class="pub-link" href="https://arxiv.org/abs/2606.31115v1">Paper</a>
               <a class="pub-link" href="https://github.com/wcy199705/JacobianAvatar">Code</a>
               <div class="tags"><span class="tag">3D Vision</span><span class="tag">Optimization</span></div>
@@ -245,7 +246,7 @@
         </li>
 
         <li class="pub" id="pub-cbm" data-year="2025" data-topic="robustness optimization">
-          <figure class="pub-thumb" data-full="images/pubs/cbm.png" data-live="cbmLightbox" data-caption="Concept bottleneck models first predict human-readable concepts, then derive the class label solely from those concepts, making their reasoning accessible through the concept layer. This interpretability, however, depends on a clean concept layer. Shown here is a t-SNE visualization of the CUB embedding learned for the <em>blue upperparts</em> concept, where the noise rate is the fraction of concept annotations corrupted during training. With clean supervision (0% noise), samples with and without the concept form distinct clusters; as the noise rate grows to 40%, images with the concept scatter among those without it and the clusters collapse, rendering the concept uninterpretable." role="button" tabindex="0" aria-label="Enlarge figure: t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling">
+          <figure class="pub-thumb" data-full="images/pubs/cbm-thumb.png" data-live="cbmLightbox" data-caption="Concept bottleneck models predict human-readable concepts and derive the label from them alone, so their interpretability rests on a clean concept layer. Shown here is what label noise does to that layer, where the noise rate is the fraction of training concept labels flipped. Under clean supervision, images with and without the <em>blue upperparts</em> concept form distinct clusters; as the noise rate grows, they intermix and the concept loses its meaning, while concept alignment and task accuracy fall together." role="button" tabindex="0" aria-label="Enlarge figure: t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling">
             <img src="images/pubs/cbm-thumb.png" srcset="images/pubs/cbm-thumb-480.png 480w, images/pubs/cbm-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="t-SNE of a concept embedding, clean supervision on the left and 40% noisy on the right, with the two clusters entangling" loading="lazy" decoding="async" />
             <div class="live-fig" id="cbmThumb" aria-hidden="true"></div>
           </figure>
@@ -262,7 +263,7 @@
         </li>
 
         <li class="pub" id="pub-zip" data-year="2025" data-topic="optimization efficiency">
-          <figure class="pub-thumb" data-full="images/pubs/zip.svg" data-caption="Large vision-language models are often available only through <em>black-box</em> prediction APIs, making adaptation a query-intensive process of prompt tuning without gradients, where every call incurs a cost. ZIP reduces the required queries by reparameterizing prompts in a low-rank form and clipping its zeroth-order gradient estimates. Averaged across 13 vision-language tasks, ZIP reaches the target accuracy using roughly half as many queries as the strongest baseline (left) and achieves comparable training accuracy about 8&times; sooner (right)." role="button" tabindex="0" aria-label="Enlarge figure: Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines">
+          <figure class="pub-thumb" data-full="images/pubs/zip.svg" data-scale="0.85" data-caption="Large vision-language models are often available only through <em>black-box</em> prediction APIs, making adaptation a query-intensive process of prompt tuning without gradients, where every call incurs a cost. ZIP reduces the required queries by reparameterizing prompts in a low-rank form and clipping its zeroth-order gradient estimates. Averaged across 13 vision-language tasks, ZIP reaches the target accuracy using roughly half as many queries as the strongest baseline (left) and achieves comparable training accuracy about 8&times; sooner (right)." role="button" tabindex="0" aria-label="Enlarge figure: Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines">
             <img src="images/pubs/zip-thumb.png" srcset="images/pubs/zip-thumb-480.png 480w, images/pubs/zip-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
@@ -278,7 +279,7 @@
         </li>
 
         <li class="pub" id="pub-fedfwd" data-year="2023" data-topic="optimization efficiency">
-          <figure class="pub-thumb" data-full="images/pubs/fedfwd.svg" data-caption="FedFwd replaces backpropagation with the Forward-Forward algorithm&rsquo;s layer-wise local updates, eliminating the need for clients to store intermediate activations. It enables federated training on memory-constrained edge devices. On MNIST, test accuracy over communication rounds shows that FedFwd closely tracks FedAvg with i.i.d. client data, while converging more slowly and with higher variance in the non-i.i.d. setting." role="button" tabindex="0" aria-label="Enlarge figure: Test accuracy versus communication rounds on MNIST for FedFwd and FedAvg, under i.i.d. and non-i.i.d. client data">
+          <figure class="pub-thumb" data-full="images/pubs/fedfwd.svg" data-scale="0.7" data-caption="FedFwd replaces backpropagation with the Forward-Forward algorithm&rsquo;s layer-wise local updates, so clients need not store intermediate activations, enabling federated training on memory-constrained edge devices. On MNIST, FedFwd closely tracks FedAvg with i.i.d. client data, but converges more slowly and with higher variance in the non-i.i.d. setting." role="button" tabindex="0" aria-label="Enlarge figure: Test accuracy versus communication rounds on MNIST for FedFwd and FedAvg, under i.i.d. and non-i.i.d. client data">
             <img src="images/pubs/fedfwd-thumb.png" srcset="images/pubs/fedfwd-thumb-480.png 480w, images/pubs/fedfwd-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Test accuracy versus communication rounds on MNIST for FedFwd and FedAvg, under i.i.d. and non-i.i.d. client data" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
@@ -293,7 +294,7 @@
         </li>
 
         <li class="pub" id="pub-sam" data-year="2023" data-topic="optimization">
-          <figure class="pub-thumb" data-full="images/pubs/sam.svg" data-caption="Test accuracy as a function of mini-batch size for SGD and SAM on a ResNet. The two methods perform comparably at small batch sizes, but as the mini-batch grows, SGD degrades sharply and erratically, whereas SAM remains robust." role="button" tabindex="0" aria-label="Enlarge figure: Test accuracy versus mini-batch size for SGD and SAM on a ResNet">
+          <figure class="pub-thumb" data-full="images/pubs/sam.svg" data-scale="0.55" data-caption="Test accuracy as a function of mini-batch size for SGD and SAM on a ResNet. The two methods perform comparably at small batch sizes, but as the mini-batch grows, SGD degrades sharply and erratically, whereas SAM remains robust." role="button" tabindex="0" aria-label="Enlarge figure: Test accuracy versus mini-batch size for SGD and SAM on a ResNet">
             <img src="images/pubs/sam-thumb.png" srcset="images/pubs/sam-thumb-480.png 480w, images/pubs/sam-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Test accuracy versus mini-batch size for SGD and SAM on a ResNet" loading="lazy" decoding="async" />
           </figure>
           <div class="pub-body">
@@ -390,7 +391,7 @@
     </section>
 
     <footer class="footer">
-      <p>© <span id="year"></span> Seonghwan Park · Last updated Oct 2026</p>
+      <p>© <span id="year"></span> Seonghwan Park · Last updated Nov 2026</p>
     </footer>
   </main>
 
@@ -418,6 +419,6 @@
   <script src="images/pubs/cando-airplane.js"></script>
   <script src="images/pubs/fold-esd.js"></script>
   <script src="images/pubs/cbm-noise.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=20261119a"></script>
 </body>
 </html>

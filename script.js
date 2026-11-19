@@ -165,7 +165,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
   // max-height instead, so measure what actually got rendered.
   function fitCaption() {
     fig.style.width = '';
-    const w = (live || img).getBoundingClientRect().width;
+    const w = (live || img).offsetWidth;   // layout width: the panel's opening animation scales what getBoundingClientRect reports
     if (w) fig.style.width = w + 'px';
   }
 
@@ -178,9 +178,12 @@ document.getElementById('year').textContent = new Date().getFullYear();
     if (live) {
       live.hidden = false;
       img.hidden = true;
+      img.removeAttribute('src'); img.alt = '';   // nothing left over from a static figure opened before
     } else {
       img.src = full;
       img.alt = thumb.querySelector('img') ? thumb.querySelector('img').alt : '';
+      // data-scale draws a figure at that share of the column's width, with the caption keeping the full width
+      img.style.setProperty('--side', `${(1 - (parseFloat(thumb.dataset.scale) || 1)) * 50}%`);
     }
     // innerHTML, not textContent: captions may carry light markup such as <em>.
     cap.innerHTML = thumb.dataset.caption || '';
@@ -193,7 +196,8 @@ document.getElementById('year').textContent = new Date().getFullYear();
   function close() {
     box.hidden = true;
     fig.style.width = '';
-    img.src = '';
+    img.removeAttribute('src'); img.alt = '';
+    img.style.removeProperty('--side');
     img.hidden = false;
     if (live) { live.hidden = true; live = null; }
     document.body.style.overflow = '';
@@ -350,7 +354,7 @@ function liveCanvas(cv, big) {
   }
   const clouds = ['input', 'cando', 'target'].map((k) => ({ xyz: normalize(data[k].xyz), part: data[k].part }));
   const panels = [
-    { title: 'Misoriented input', short: 'Misoriented', sub: 'Prediction of the frozen model', score: 'mIoU ' + data.miou_source.toFixed(2), cls: 'bad' },
+    { title: 'Misoriented Input', short: 'Misoriented', sub: 'Prediction of the frozen model', score: 'mIoU ' + data.miou_source.toFixed(2), cls: 'bad' },
     { title: 'After CanDO', short: 'After CanDO', sub: '', score: 'mIoU ' + data.miou_cando.toFixed(2), cls: 'good' },
     { title: 'Upright GT', short: 'Upright', sub: '', score: 'GT', cls: '' },
   ];
@@ -365,8 +369,8 @@ function liveCanvas(cv, big) {
     build(root, big) {
       const inner = panels.map((p) =>
         `<div class="lf-t">${big ? p.title : p.short}${p.sub && `<small>${p.sub}</small>`}</div><span class="lf-s ${p.cls}">${p.score}</span>`);
-      const foot = big && `<span>${data.category} · rotated ${data.angle_deg.toFixed(0)}° about a random axis · ` +
-        `${data.parts} parts · frozen PointNet++</span><span>Drag to orbit</span>`;
+      // what the panels' colours mean, beneath them; the caption below keeps to the method
+      const foot = big && '<span class="lf-note">Colours show the parts a frozen PointNet++ predicts before and after CanDO, and the GT parts.</span><span>Drag to orbit</span>';
       return livePanels(root, inner, foot).map((cv, j) => [cv, clouds[j]]);
     },
     // Depth-sorted, depth-faded points.
@@ -419,12 +423,13 @@ function liveCanvas(cv, big) {
     build(root, big) {
       if (!big) {
         const cvs = livePanels(root, data.map((d) => `<div class="lf-t solo">${d.title}</div>`));
-        root.insertAdjacentHTML('beforeend', `<div class="lf-legend">${legend}</div>`);
+        // the legend top left, and what the rows are top right
+        root.insertAdjacentHTML('beforeend', `<div class="lf-legend is-tight">${legend}</div><div class="lf-tag">Hessian Spectra</div>`);
         return cvs.map((cv, j) => [cv, data[j]]);
       }
       const inner = data.map((d) => `<div class="lf-t">${d.title}<small>Feature-Hessian Spectrum of Each Test Set</small></div>`);
       const foot = `<span class="lf-legend">${legend}</span>` +
-        '<span>spikes: eigenvalues, height: log density · ● largest eigenvalue</span>';
+        '<span>Spikes: Eigenvalues, Height: Log Density · ● Largest Eigenvalue</span>';
       return livePanels(root, inner, foot).map((cv, j) => [cv, data[j]]);
     },
     draw(cv, d, big) {
@@ -581,10 +586,17 @@ function liveCanvas(cv, big) {
     }
     ctx.globalAlpha = 1;
     const page = getComputedStyle(document.documentElement);
-    ctx.fillStyle = big ? page.getPropertyValue('--ink').trim() : '#3f3f46';
-    ctx.font = `600 ${(big ? 15 : 9.5) * u}px Inter, sans-serif`;
-    ctx.textAlign = big ? 'right' : 'left'; ctx.textBaseline = 'top';
-    ctx.fillText(`Noise Rate ${Math.round(gammaAt(p) * 100)}%`, big ? w - 14 * u : 8 * u, (big ? 12 : 7) * u);
+    const noise = `Noise Rate ${Math.round(gammaAt(p) * 100)}%`;
+    if (big) {
+      // a line lower where the lightbox's close button sits over the panel's top right (on a phone)
+      const x = document.querySelector('.lightbox-close')?.getBoundingClientRect(), r = cv.getBoundingClientRect();
+      const under = x && x.right > r.left && x.left < r.right && x.bottom > r.top && x.top < r.top + 40;
+      ctx.fillStyle = page.getPropertyValue('--ink').trim(); ctx.font = `600 ${15 * u}px Inter, sans-serif`;
+      ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText(noise, w - 14 * u, (under ? 44 : 12) * u);
+    } else {   // as the Concept Alignment title of the panel beside it: its colour, size and weight, centred, on its line (7px down, 15.5px high)
+      ctx.fillStyle = '#55555c'; ctx.font = `400 ${10 * u}px Inter, sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(noise, w / 2, (7 + 15.5 / 2) * u);
+    }
     if (big) {
       ctx.fillStyle = RED; ctx.font = `600 ${12.5 * u}px Inter, sans-serif`; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
       ctx.fillText(`${mix(data.strandedRate, p).toFixed(0)}% of Present stranded among Absent`, 14 * u, h - 12 * u);
@@ -639,16 +651,15 @@ function liveCanvas(cv, big) {
   }
 
   const legend = '<span><i class="on"></i>Present</span><span><i class="off"></i>Absent</span>';
-  const legendLong = '<span><i class="on"></i>Present: the bird has blue upperparts</span><span><i class="off"></i>Absent: it does not</span>';
+  const legendLong = '<span><i class="on"></i>Concept Present</span><span><i class="off"></i>Concept Absent</span>';
   liveFigure(document.getElementById('cbmThumb'), document.getElementById('cbmLightbox'), {
     step() {},
     build(root, big) {
       const inner = big
-        ? ['<div class="lf-t">“Blue Upperparts” Concept<small>t-SNE of its embedding over CUB test images</small></div>',
-           '<div class="lf-t">As the Noise Rate Grows<small>Noise Rate: fraction of training concept labels flipped</small></div>']
-        : [`<div class="lf-legend at-bottom stacked"><b>Concept</b>${legend}</div>`, '<div class="lf-t solo at-top">Concept Alignment</div>'];
-      const foot = big && `<span class="lf-legend">${legendLong}</span>` +
-        '<span>each dot is a test image · larger red: Present among mostly Absent neighbours</span>';
+        ? ['<div class="lf-t">“Blue Upperparts” Concept<small>t-SNE of CUB test images</small></div>',
+           '<div class="lf-t">As the Noise Rate Grows<small>Noise Rate: Fraction of training concept labels flipped</small></div>']
+        : [`<div class="lf-legend at-bottom stacked is-center"><b>Concept</b>${legend}</div>`, '<div class="lf-t solo at-top">Concept Alignment</div>'];
+      const foot = big && `<span class="lf-legend">${legendLong}</span>`;
       const cvs = livePanels(root, inner, foot, big ? null : '1fr 1fr');
       return [[cvs[0], drawTsne], [cvs[1], drawCurves]];
     },
