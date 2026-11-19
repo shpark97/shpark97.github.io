@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" type="text/css" href="stylesheet.css?v=20261119a" />
+  <link rel="stylesheet" type="text/css" href="stylesheet.css?v=20261119b" />
 </head>
 
 <body>
@@ -115,11 +115,12 @@
         <button class="toggle-news" id="toggleNews" aria-expanded="false">Show all</button>
       </div>
       <ul class="news-list" id="newsList">
+        <li><time>Nov 2026</time><p>Released three preprints on 3D and 4D hand-object interaction: <a href="#pub-codehoi" data-pub-link>CodeHOI</a>, <a href="#pub-horcrux" data-pub-link>HORCRUX</a>, and <a href="#pub-brh" data-pub-link>Beyond Rigid Hands</a>.</p></li>
         <li><time>Aug 2026</time><p>Our paper on recovering black-box 3D models from pose shifts was accepted to <strong>WACV 2027</strong> <span style="white-space:nowrap">(Round 1).</span></p></li>
         <li><time>Jun 2026</time><p>Our papers on efficient OOD detection and monocular avatar reconstruction were accepted to <strong>ECCV 2026</strong>.</p></li>
         <li><time>Jan 2026</time><p>Joined the <a href="https://www.keti.re.kr/main/main.php">Korea Electronics Technology Institute (KETI)</a> as a researcher, working on 3D vision and physical AI under <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Dr. Min-Gyu Park</a>.</p></li>
         <li><time>Sep 2025</time><p>Our paper on robust concept bottleneck models was accepted to <strong>NeurIPS 2025</strong>.</p></li>
-        <li><time>Aug 2025</time><p>Completed my M.S. in AI at <strong>POSTECH</strong>, advised by <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a>.</p></li>
+        <li class="news-extra"><time>Aug 2025</time><p>Completed my M.S. in AI at <strong>POSTECH</strong>, advised by <a href="https://namhoonlee.github.io/">Prof. Namhoon Lee</a>.</p></li>
         <li class="news-extra"><time>Jan 2025</time><p>Our paper on black-box prompt tuning was accepted to <strong>ICLR 2025</strong>.</p></li>
         <li class="news-extra"><time>Jun 2024</time><p>Started a project with <strong>Samsung Advanced Institute of Technology (SAIT)</strong> on visual prompting for MMFM-based VQA.</p></li>
         <li class="news-extra"><time>Jun 2023</time><p>Our paper on backprop-free federated learning was presented at the <strong>ICML 2023 Federated Learning Workshop</strong>.</p></li>
@@ -138,6 +139,9 @@
           <h3>3D vision &amp; Physical AI</h3>
           <p>Recovering and generating 3D humans, hands and objects, and the physical interactions between them.</p>
           <ul class="r-papers">
+            <li><a href="#pub-codehoi" data-pub-link>CodeHOI <span>Preprint</span></a></li>
+            <li><a href="#pub-horcrux" data-pub-link>HORCRUX <span>Preprint</span></a></li>
+            <li><a href="#pub-brh" data-pub-link>Beyond Rigid Hands <span>Preprint</span></a></li>
             <li><a href="#pub-cando" data-pub-link>CanDO <span>WACV 2027</span></a></li>
             <li><a href="#pub-jacobian" data-pub-link>JacobianAvatar <span>ECCV 2026</span></a></li>
           </ul>
@@ -190,6 +194,57 @@
       </div>
 
       <ul class="pub-list" id="pubList">
+
+        <li class="pub" id="pub-codehoi" data-year="2027" data-topic="3d">
+          <figure class="pub-thumb" data-full="images/pubs/codehoi-thumb.jpg" data-live="codehoiLightbox" data-caption="CodeHOI writes physically plausible 4D hand-object interaction as a program. Agents build each object with its own physics, specify the hands by their contacts, simulate each kind of matter with an established physics solver and verify the result against physical laws. One framework thus covers both reconstruction and generation across rigid, deformable, co-dimensional and flowing matter." role="button" tabindex="0" aria-label="Open figure: A simulated hand knocking down a block tower, one of four generated interactions">
+            <img src="images/pubs/codehoi-thumb.jpg" srcset="images/pubs/codehoi-thumb-480.jpg 480w, images/pubs/codehoi-thumb.jpg 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="A simulated hand knocking down a block tower, one of four generated interactions" loading="lazy" decoding="async" />
+            <video class="thumb-video" data-src="images/pubs/codehoi.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            <div class="thumb-labels is-legend" data-cuts="7.52,14.31,25.44" aria-hidden="true"><span class="on" style="--m:#2a78d6"><i></i>Rigid</span><span style="--m:#eb6834"><i></i>Deformable</span><span style="--m:#1baf7a"><i></i>Cloth</span><span style="--m:#eda100"><i></i>Flowing</span></div>
+          </figure>
+          <div class="pub-body">
+            <h3 class="pub-title">CodeHOI: Code with Agents for Physically Plausible 4D Hand-Object Interaction</h3>
+            <p class="authors"><u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=vI1clmUAAAAJ&hl=ko">Inho Chang</a>, <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Min-Gyu Park</a></p>
+            <p class="venue"><span class="badge badge-pre">Preprint</span></p>
+            <div class="pub-foot">
+              <a class="pub-link" href="https://shpark97.github.io/CodeHOI-PP/">Project</a>
+              <div class="tags"><span class="tag">3D Vision</span><span class="tag">Physical AI</span></div>
+            </div>
+          </div>
+        </li>
+
+        <li class="pub" id="pub-horcrux" data-year="2027" data-topic="3d robustness optimization">
+          <figure class="pub-thumb" data-full="images/pubs/horcrux-thumb.jpg" data-live="horcruxLightbox" data-caption="HORCRUX reconstructs the hands and an unseen object from a monocular image in a single feed-forward pass, with coarse-to-fine contact estimation. A frozen foundation model encodes the object from its mesh, so new objects need no retraining, and coarse per-joint contact is resolved over finer hand regions using the reconstructed geometry." role="button" tabindex="0" aria-label="Open figure: A photo of a hand grasping a mug on its side, its 3D reconstruction, and the estimated contact marked on an open hand">
+            <img src="images/pubs/horcrux-thumb.jpg" srcset="images/pubs/horcrux-thumb-480.jpg 480w, images/pubs/horcrux-thumb.jpg 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="A photo of a hand grasping a mug on its side, its 3D reconstruction, and the estimated contact marked on an open hand" loading="lazy" decoding="async" />
+            <video class="thumb-video" data-src="images/pubs/horcrux.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            <div class="thumb-labels is-3" aria-hidden="true"><span><span class="lf-t solo">Input</span></span><span><span class="lf-t solo">Reconstruction</span></span><span><span class="lf-t solo">Contact</span></span></div>
+          </figure>
+          <div class="pub-body">
+            <h3 class="pub-title">HORCRUX: Generalizable Feed-Forward 3D Hand-Object Reconstruction with Coarse-to-Fine Contact Estimation</h3>
+            <p class="authors"><u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=37rgddAAAAAJ&hl=ko">Yong-Hoon Kwon</a>, <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Min-Gyu Park</a></p>
+            <p class="venue"><span class="badge badge-pre">Preprint</span></p>
+            <div class="pub-foot">
+              <a class="pub-link" href="https://shpark97.github.io/Horcrux/">Project</a>
+              <div class="tags"><span class="tag">3D Vision</span><span class="tag">Robustness</span><span class="tag">Optimization</span></div>
+            </div>
+          </div>
+        </li>
+
+        <li class="pub" id="pub-brh" data-year="2027" data-topic="3d optimization">
+          <figure class="pub-thumb" data-full="images/pubs/brh-thumb.jpg" data-live="brhLightbox" data-caption="Rigid hand meshes in datasets and estimators hover above or penetrate objects. Since this stems from the rigid skin rather than the pose, we lift these hands to contact-consistent meshes in three stages: (i) kinematic seating places the fingers on the object, (ii) skin deformation conforms the skin to its surface, and (iii) a temporal prior maintains consistent contact across frames. This yields more stable grasps over time." role="button" tabindex="0" aria-label="Open figure: A hand mesh grasping a bottle as it is lifted: fingertips inside the object in red settle onto its surface in green">
+            <img src="images/pubs/brh-thumb.jpg" srcset="images/pubs/brh-thumb-480.jpg 480w, images/pubs/brh-thumb.jpg 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="A hand mesh grasping a bottle as it is lifted: fingertips inside the object in red settle onto its surface in green" loading="lazy" decoding="async" />
+            <video class="thumb-video" data-src="images/pubs/brh.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+            <div class="thumb-labels is-steps" aria-hidden="true"><span class="thumb-steps" data-cuts="1,4,6.4,10.3"><span class="on">Rigid Annotation (GT)</span><span>Kinematic Seating</span><span>Skin Deformation</span><span>Lifted (ours)</span></span><span class="thumb-key"><span><i style="background:#d11417"></i>Inside the object</span><span><i style="background:#1f9945"></i>On the surface</span></span></div>
+          </figure>
+          <div class="pub-body">
+            <h3 class="pub-title">Beyond Rigid Hands: Deforming Skin into Contact-Consistent Hand Meshes</h3>
+            <p class="authors"><u>Seonghwan Park</u>, <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Min-Gyu Park</a></p>
+            <p class="venue"><span class="badge badge-pre">Preprint</span></p>
+            <div class="pub-foot">
+              <a class="pub-link" href="https://shpark97.github.io/BeyondRigidHands/">Project</a>
+              <div class="tags"><span class="tag">3D Vision</span><span class="tag">Optimization</span></div>
+            </div>
+          </div>
+        </li>
 
         <li class="pub" id="pub-cando" data-year="2027" data-topic="3d robustness optimization">
           <figure class="pub-thumb" data-full="images/pubs/point-thumb.png" data-live="candoLightbox" data-caption="Point cloud models are increasingly deployed through score-only <em>black-box</em> interfaces, where rotations outside the training distribution can severely degrade accuracy, while retraining and gradient-based adaptation remain unavailable. CanDO canonicalizes inputs using forward queries alone, searching SO(3) for the rotation that maximizes model confidence." role="button" tabindex="0" aria-label="Enlarge figure: Point clouds shown misoriented, after pose recovery by CanDO, and as the clean upright target, coloured by parts">
@@ -411,6 +466,79 @@
         <div class="live-fig is-big is-orbit" id="candoLightbox" hidden></div>
         <div class="live-fig is-big is-pair is-esd" id="foldLightbox" hidden></div>
         <div class="live-fig is-big is-pair" id="cbmLightbox" hidden></div>
+        <div class="mfig is-hoi" id="codehoiLightbox" hidden>
+          <div class="hoi-bar">
+            <div class="mfig-seg" role="group" aria-label="Task"><button type="button" data-mode="gen" aria-pressed="true">Generation</button><button type="button" data-mode="rec" aria-pressed="false">Reconstruction</button></div>
+            <div class="hoi-kinds" role="group" aria-label="Kind of matter"><button type="button" data-kind="rigid" style="--m:#2a78d6" aria-pressed="false"><i></i>Rigid<b></b></button><button type="button" data-kind="deformable" style="--m:#eb6834" aria-pressed="false"><i></i>Deformable<b></b></button><button type="button" data-kind="codim" style="--m:#1baf7a" aria-pressed="false"><i></i>Co-dimensional<b></b></button><button type="button" data-kind="flowing" style="--m:#eda100" aria-pressed="false"><i></i>Flowing<b></b></button></div>
+          </div>
+          <div class="hoi-sets">
+            <div class="hoi-set" data-mode="gen" data-kind="rigid" style="--m:#2a78d6" data-s="9.70">
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_sr5.mp4" data-poster="images/pubs/codehoi/gen_sr5.jpg" muted loop playsinline preload="none" aria-label="Generated: Pull the ball at the left end out to the side and let it go, so that the ball at the right end swings out."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_sr5.jpg" alt="The input 3D scene" loading="lazy" draggable="false" /><blockquote class="hoi-q">Pull the ball at the left end out to the side and let it go, so that the ball at the right end swings out.</blockquote></figcaption></figure>
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_ir2.mp4" data-poster="images/pubs/codehoi/gen_ir2.jpg" muted loop playsinline preload="none" aria-label="Generated: Push the block marked 11 out of the tower without the tower falling."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_ir2.jpg" alt="The input photograph" loading="lazy" draggable="false" /><blockquote class="hoi-q">Push the block marked 11 out of the tower without the tower falling.</blockquote></figcaption></figure>
+            </div>
+            <div class="hoi-set" data-mode="gen" data-kind="deformable" style="--m:#eb6834" data-s="5.93">
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_td3.mp4" data-poster="images/pubs/codehoi/gen_td3.jpg" muted loop playsinline preload="none" aria-label="Generated: Pull the slime between your hands until it is twice as long as it was."></video></div><figcaption class="hoi-in"><span class="hoi-bubble" role="img" aria-label="Text only"><svg viewBox="0 0 48 40" aria-hidden="true"><path d="M8 2h32a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H20l-9 8v-8H8a6 6 0 0 1-6-6V8a6 6 0 0 1 6-6z"/><circle cx="14" cy="16" r="3"/><circle cx="24" cy="16" r="3"/><circle cx="34" cy="16" r="3"/></svg></span><blockquote class="hoi-q">Pull the slime between your hands until it is twice as long as it was.</blockquote></figcaption></figure>
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_sd6.mp4" data-poster="images/pubs/codehoi/gen_sd6.jpg" muted loop playsinline preload="none" aria-label="Generated: Squeeze the soft ring between your thumb and index finger until its hole closes, then let it go."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_sd6.jpg" alt="The input 3D scene" loading="lazy" draggable="false" /><blockquote class="hoi-q">Squeeze the soft ring between your thumb and index finger until its hole closes, then let it go.</blockquote></figcaption></figure>
+            </div>
+            <div class="hoi-set" data-mode="gen" data-kind="codim" style="--m:#1baf7a" data-s="8.83">
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_ic5.mp4" data-poster="images/pubs/codehoi/gen_ic5.jpg" muted loop playsinline preload="none" aria-label="Generated: Pull one tissue out of the box."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_ic5.jpg" alt="The input photograph" loading="lazy" draggable="false" /><blockquote class="hoi-q">Pull one tissue out of the box.</blockquote></figcaption></figure>
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_sc7.mp4" data-poster="images/pubs/codehoi/gen_sc7.jpg" muted loop playsinline preload="none" aria-label="Generated: Tear the paper into two pieces."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_sc7.jpg" alt="The input 3D scene" loading="lazy" draggable="false" /><blockquote class="hoi-q">Tear the paper into two pieces.</blockquote></figcaption></figure>
+            </div>
+            <div class="hoi-set" data-mode="gen" data-kind="flowing" style="--m:#eda100" data-s="11.17">
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_sf3.mp4" data-poster="images/pubs/codehoi/gen_sf3.jpg" muted loop playsinline preload="none" aria-label="Generated: Lift the pitcher by its handle and pour water into the mug."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_sf3.jpg" alt="The input 3D scene" loading="lazy" draggable="false" /><blockquote class="hoi-q">Lift the pitcher by its handle and pour water into the mug.</blockquote></figcaption></figure>
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_sf9.mp4" data-poster="images/pubs/codehoi/gen_sf9.jpg" muted loop playsinline preload="none" aria-label="Generated: Sweep the marbles together into one pile with your hand."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_sf9.jpg" alt="The input 3D scene" loading="lazy" draggable="false" /><blockquote class="hoi-q">Sweep the marbles together into one pile with your hand.</blockquote></figcaption></figure>
+            </div>
+            <div class="hoi-set is-rec" data-mode="rec" data-kind="rigid" style="--m:#2a78d6" data-s="5.13">
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/rec_laptop_input.mp4" data-poster="images/pubs/codehoi/rec_laptop_input.jpg" muted loop playsinline preload="none" aria-label="Opening a laptop: the input video"></video><span class="mfig-t">Input video</span></div></figure>
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/rec_laptop_ours.mp4" data-poster="images/pubs/codehoi/rec_laptop_ours.jpg" muted loop playsinline preload="none" aria-label="Opening a laptop: reconstructed by CodeHOI"></video><span class="mfig-t">CodeHOI</span></div></figure>
+            </div>
+            <div class="hoi-set is-rec" data-mode="rec" data-kind="deformable" style="--m:#eb6834" data-s="6.23">
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/rec_squeeze_input.mp4" data-poster="images/pubs/codehoi/rec_squeeze_input.jpg" muted loop playsinline preload="none" aria-label="Squeezing plasticine: the input video"></video><span class="mfig-t">Input video</span></div></figure>
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/rec_squeeze_ours.mp4" data-poster="images/pubs/codehoi/rec_squeeze_ours.jpg" muted loop playsinline preload="none" aria-label="Squeezing plasticine: reconstructed by CodeHOI"></video><span class="mfig-t">CodeHOI</span></div></figure>
+            </div>
+            <div class="hoi-set is-rec" data-mode="rec" data-kind="codim" style="--m:#1baf7a" data-s="4.40">
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/rec_cloth_input.mp4" data-poster="images/pubs/codehoi/rec_cloth_input.jpg" muted loop playsinline preload="none" aria-label="Lifting a cloth: the input video"></video><span class="mfig-t">Input video</span></div></figure>
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/rec_cloth_ours.mp4" data-poster="images/pubs/codehoi/rec_cloth_ours.jpg" muted loop playsinline preload="none" aria-label="Lifting a cloth: reconstructed by CodeHOI"></video><span class="mfig-t">CodeHOI</span></div></figure>
+            </div>
+            <div class="hoi-set is-rec" data-mode="rec" data-kind="flowing" style="--m:#eda100" data-s="9.57">
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/rec_bottle_input.mp4" data-poster="images/pubs/codehoi/rec_bottle_input.jpg" muted loop playsinline preload="none" aria-label="Pouring beads from a bottle: the input video"></video><span class="mfig-t">Input video</span></div></figure>
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/rec_bottle_ours.mp4" data-poster="images/pubs/codehoi/rec_bottle_ours.jpg" muted loop playsinline preload="none" aria-label="Pouring beads from a bottle: reconstructed by CodeHOI"></video><span class="mfig-t">CodeHOI</span></div></figure>
+            </div>
+          </div>
+        </div>
+        <div class="mfig is-meshes" id="horcruxLightbox" hidden>
+          <div class="mfig-stage3d">
+            <div class="hx-head is-top"><span class="hx-h">Reconstruction</span><div class="mfig-seg" role="group" aria-label="Examples"><button type="button" data-set="dexycb_25636,dexycb_84689,oakink_17116" aria-pressed="true">One hand</button><button type="button" data-set="oakink2_990,oakink2_1718,h2o_2145" aria-pressed="false">Two hands</button></div><span class="hx-rule"></span></div>
+            <div class="mfig-grid hx-recon stage-host">
+              <div class="mfig-p" aria-label="HORCRUX's reconstruction, turning in 3D"><img class="mfig-in" alt="Input image" draggable="false" /></div>
+              <div class="mfig-p" aria-label="HORCRUX's reconstruction, turning in 3D"><img class="mfig-in" alt="Input image" draggable="false" /></div>
+              <div class="mfig-p" aria-label="HORCRUX's reconstruction, turning in 3D"><img class="mfig-in" alt="Input image" draggable="false" /></div>
+            </div>
+            <div class="hx-head"><span class="hx-h">Contact estimation<small>coarse to fine</small></span></div>
+            <div class="hx-c2f stage-host">
+              <div class="mfig-p" data-step="coarse" aria-label="Coarse contact on the canonical hand, turning in 3D"><img class="mfig-in" src="images/pubs/horcrux/contact.jpg" alt="Input image" loading="lazy" draggable="false" /><span class="mfig-t">Coarse Contact</span></div>
+              <span class="hx-op" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg></span>
+              <div class="mfig-p" data-step="dist" aria-label="Distance of each hand region to the object, turning in 3D"><span class="mfig-t">Region Distance</span></div>
+              <span class="hx-op" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2.5 8h10.5M9 4l4 4-4 4"/></svg></span>
+              <div class="mfig-p" data-step="fine" aria-label="Fine contact on the canonical hand, turning in 3D"><span class="mfig-t">Fine Contact</span></div>
+            </div>
+            <p class="mfig-msg">Loading 3D&hellip;</p>
+          </div>
+          <p class="lf-foot"><span class="lf-legend"><span><i style="background:#b8cff0"></i>Hand</span><span><i style="background:#f7a338"></i>Object</span><span><i style="background:#d54751"></i>Contact</span><span class="hx-near">Near<i></i>Far</span></span><span>Drag to orbit</span></p>
+        </div>
+        <div class="mfig is-thermal" id="brhLightbox" hidden>
+          <div class="mfig-stage">
+            <canvas aria-label="Interactive 3D view of a camera, coloured by the contact measured from thermal imprints and by the contact of the rigid annotation, ContactOpt and our lift"></canvas>
+            <div class="mfig-over">
+              <div><span class="mfig-t">Thermal Measurement</span><span class="mfig-s"></span></div>
+              <div><span class="mfig-t">Rigid Annotation</span><span class="mfig-s"></span></div>
+              <div><span class="mfig-t">ContactOpt</span><span class="mfig-s"></span></div>
+              <div><span class="mfig-t">Ours</span><span class="mfig-s"></span></div>
+            </div>
+            <p class="mfig-msg">Loading 3D&hellip;</p>
+          </div>
+          <p class="lf-foot"><span class="lf-legend"><span><i style="background:#c81e1e"></i>Measured heat</span><span><i style="background:#3ea055"></i>Correct</span><span><i style="background:#466ec8"></i>Missed</span><span><i style="background:#f08c28"></i>False</span></span><span>Drag to orbit</span></p>
+        </div>
         <p class="lightbox-caption" id="lightboxCaption"></p>
       </div>
     </div>
@@ -419,6 +547,6 @@
   <script src="images/pubs/cando-airplane.js"></script>
   <script src="images/pubs/fold-esd.js"></script>
   <script src="images/pubs/cbm-noise.js"></script>
-  <script src="script.js?v=20261119a"></script>
+  <script src="script.js?v=20261119b"></script>
 </body>
 </html>

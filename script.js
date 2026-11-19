@@ -191,6 +191,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
     document.body.style.overflow = 'hidden';
     fitCaption();
     box.querySelector('.lightbox-close').focus();
+    if (live) live.dispatchEvent(new CustomEvent('fig:open'));   // media figures start here
   }
 
   function close() {
@@ -199,7 +200,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
     img.removeAttribute('src'); img.alt = '';
     img.style.removeProperty('--side');
     img.hidden = false;
-    if (live) { live.hidden = true; live = null; }
+    if (live) { live.dispatchEvent(new CustomEvent('fig:close')); live.hidden = true; live = null; }
     document.body.style.overflow = '';
     if (opener) { opener.focus(); opener = null; }
   }
@@ -232,6 +233,16 @@ document.getElementById('year').textContent = new Date().getFullYear();
   document.querySelectorAll('.pub-thumb .thumb-video').forEach((v) => {
     const thumb = v.closest('.pub-thumb');
     v.addEventListener('loadeddata', () => thumb.classList.add('is-live'), { once: true });
+    // A loop that goes through several clips or stages lists them beside it: mark the one on screen.
+    const row = thumb.querySelector('[data-cuts]');
+    // A cut past the last item wraps round to the first (a loop that returns to its start before it ends).
+    if (row) {
+      const cuts = row.dataset.cuts.split(',').map(Number), n = row.children.length;
+      v.addEventListener('timeupdate', () => {
+        const at = cuts.filter((c) => v.currentTime >= c).length % n;
+        Array.from(row.children).forEach((el, k) => el.classList.toggle('on', k === at));
+      });
+    }
     new IntersectionObserver((es) => es.forEach((e) => {
       if (e.isIntersecting) {
         if (!v.src) v.src = v.dataset.src;
@@ -665,4 +676,221 @@ function liveCanvas(cv, big) {
     },
     draw(cv, paint, big) { paint(cv, big); },
   });
+})();
+
+// ----- Lightbox figures built from media -----
+// The preprints open something that moves rather than an image: CodeHOI plays
+// a clip per kind of matter, while HORCRUX and Beyond Rigid Hands run their
+// project pages' own WebGL viewers (vendored under images/pubs/), which can be
+// dragged to orbit. A figure's files are fetched when its thumbnail is first
+// hovered, focused or touched, so that they are usually there by the click.
+(function () {
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const once = (fn) => { let p; return () => p || (p = fn()); };
+  // The meshes' faces come packed for transfer (walk() in homepage-figures/make_preprints.py): three planes of int16
+  // differences, each face's first vertex from the previous face's, then its other two from its first.
+  const unwalk = (d, Out = Uint16Array) => {
+    const n = d.length / 3, F = new Out(3 * n);
+    for (let i = 0, a = 0; i < n; i++) { a += d[i]; F[3 * i] = a; F[3 * i + 1] = a + d[n + i]; F[3 * i + 2] = a + d[2 * n + i]; }
+    return F;
+  };
+  function figure(id, load, open, close) {
+    const el = document.getElementById(id), thumb = document.querySelector(`.pub-thumb[data-live="${id}"]`);
+    if (!el || !thumb) return;
+    const warm = () => { Promise.resolve(load(el)).catch(() => {}); };
+    ['pointerenter', 'focus', 'touchstart'].forEach((t) => thumb.addEventListener(t, warm, { once: true, passive: true }));
+    el.addEventListener('fig:open', () => open(el));
+    if (close) el.addEventListener('fig:close', () => close(el));
+  }
+  const fail = (el) => (e) => {
+    console.error(e);
+    el.querySelectorAll('.mfig-msg').forEach((m) => { m.textContent = 'This 3D view could not be loaded.'; });
+  };
+
+  // CodeHOI: sets of two clips, by task (generation, reconstruction) and kind of
+  // matter, in the page's order. Opening the figure starts at the first set; once
+  // both of a set's clips can play they start together, and the set stays for
+  // data-s seconds (most of the longer clip), then the next follows, round
+  // through both tasks. A task or a kind can be chosen at any time; the next set
+  // is fetched while one plays. With reduced motion nothing starts on its own.
+  (function () {
+    const el = document.getElementById('codehoiLightbox');
+    if (!el) return;
+    const sets = [...el.querySelectorAll('.hoi-set')], modes = [...el.querySelectorAll('[data-mode]:not(.hoi-set)')];
+    const kinds = [...el.querySelectorAll('.hoi-kinds button')];
+    const vids = (s) => [...s.querySelectorAll('video')];
+    const fetchSet = (s) => vids(s).forEach((v) => { if (!v.src) { v.poster = v.dataset.poster; v.preload = 'auto'; v.src = v.dataset.src; } });
+    let at = -1, timer = 0, turn = 0;
+    function stop() { clearTimeout(timer); kinds.forEach((b) => b.classList.remove('run')); }
+    function show(k) {
+      stop();
+      const s = sets[k], my = ++turn;
+      at = k;
+      sets.forEach((x, i) => { x.classList.toggle('on', i === k); if (i !== k) vids(x).forEach((v) => v.pause()); });
+      modes.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === s.dataset.mode)));
+      kinds.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.kind === s.dataset.kind)));
+      fetchSet(s);
+      const ready = vids(s).map((v) => (v.readyState >= 3 ? null : new Promise((r) => v.addEventListener('canplay', r, { once: true }))));
+      Promise.race([Promise.all(ready), new Promise((r) => setTimeout(r, 4000))]).then(() => {
+        if (my !== turn) return;                                   // another set was chosen meanwhile
+        fetchSet(sets[(k + 1) % sets.length]);
+        if (still) { vids(s).forEach((v) => { v.controls = true; }); return; }   // played only when asked
+        vids(s).forEach((v) => { try { v.currentTime = 0; } catch (e) {} v.play().catch(() => {}); });
+        const ms = Number(s.dataset.s) * 1000, bar = kinds.find((b) => b.dataset.kind === s.dataset.kind);
+        el.style.setProperty('--dwell', ms + 'ms');
+        void bar.offsetWidth;                                      // restart the bar's fill
+        bar.classList.add('run');
+        timer = setTimeout(() => show((k + 1) % sets.length), ms);
+      });
+    }
+    const find = (mode, kind) => sets.findIndex((s) => s.dataset.mode === mode && s.dataset.kind === kind);
+    modes.forEach((b) => b.addEventListener('click', () => show(find(b.dataset.mode, sets[at].dataset.kind))));
+    kinds.forEach((b) => b.addEventListener('click', () => show(find(sets[at].dataset.mode, b.dataset.kind))));
+    figure('codehoiLightbox', () => fetchSet(sets[0]), () => show(0), () => { stop(); turn++; sets.forEach((s) => vids(s).forEach((v) => v.pause())); });
+  })();
+
+  // HORCRUX: a canvas over each row. The top row holds HORCRUX's reconstructions,
+  // three at a time: the one-hand examples, then the two-hand ones, taking turns
+  // or chosen above. Each set opens in the view of its input images and turns to
+  // the side, where the grasp shows, then sways until dragged; nothing changes
+  // while a view is held. The bottom row is the fine contact head on one example,
+  // as on the project page: the coarse contact over 21 joints and the distance of
+  // each of 103 hand regions to the object resolve the contact over those regions.
+  // Its three hands turn together, all the way round.
+  const hxBase = 'images/pubs/horcrux/';
+  const hxEl = document.getElementById('horcruxLightbox');
+  const hxSets = hxEl ? [...hxEl.querySelectorAll('[data-set]')] : [];
+  const hxNames = (k) => hxSets[k].dataset.set.split(',');
+  const HX_DWELL = 9000, HX_FADE = 280;
+  const hxFiles = once(() => import('./' + hxBase + 'viewer.js').then((V) => {
+    hxNames(0).forEach((n) => V.getJSON(hxBase + n + '.json').catch(() => {}));
+    ['mano.json', 'hand.json', 'contact.json'].forEach((f) => V.getJSON(hxBase + f).catch(() => {}));
+    return V;
+  }));
+  let hxShow = null, hxStop = () => {};
+  const hxBuild = once(() => hxFiles().then(async (V) => {
+    const { THREE } = V, el = hxEl;
+    const recHost = el.querySelector('.hx-recon'), conHost = el.querySelector('.hx-c2f');
+    const top = new V.Stage(recHost), bottom = new V.Stage(conHost);
+    const mano = V.dec((await V.getJSON(hxBase + 'mano.json')).F), left = new Uint16Array(mano.length);
+    for (let i = 0; i < mano.length; i += 3) { left[i] = mano[i]; left[i + 1] = mano[i + 2]; left[i + 2] = mano[i + 1]; }   // mirrored winding
+
+    // A scene per example, built when its set is first shown; its input image is decoded by then too.
+    const scenes = new Map();
+    const sceneOf = (name) => {
+      if (!scenes.has(name)) scenes.set(name, Promise.all([V.getJSON(hxBase + name + '.json'), new Promise((ok) => {
+        const im = new Image(); im.onload = im.onerror = () => ok(); im.src = hxBase + name + '.jpg';
+      })]).then(([d]) => {
+        const target = new THREE.Vector3(...d.target), camera = new THREE.PerspectiveCamera(24, 1, 0.01, 20), scene = V.makeScene(camera);
+        const box = (o) => Float32Array.from(V.dec(o), (q, i) => o.lo[i % 3] + (o.hi[i % 3] - o.lo[i % 3]) * q / 65535);   // 16-bit steps across its box
+        const hands = d.hands.map((h) => V.dec(h.V)), obj = d.obj.V.lo ? box(d.obj.V) : V.dec(d.obj.V);
+        hands.forEach((hv, k) => {
+          const isLeft = d.hands[k].side === 'L';
+          scene.add(new THREE.Mesh(V.geometry(hv, isLeft ? left : mano), V.mat(hands.length > 1 && isLeft ? V.HAND_L : V.HAND)));
+        });
+        scene.add(new THREE.Mesh(V.geometry(obj, V.dec(d.obj.F)), V.mat(V.OBJ)));
+        return { name, d, scene, camera, target, radius: V.radiusAbout(target, [...hands, obj]) * 1.16, toCam: target.clone().negate().normalize() };
+      }));
+      return scenes.get(name);
+    };
+    let at = -1, turn = 0, timer = 0;
+    const wait = (ms) => new Promise((ok) => setTimeout(ok, ms));
+    const later = (ms) => { clearTimeout(timer); if (!still) timer = setTimeout(() => hxShow((at + 1) % hxSets.length), ms); };
+    const slots = [...recHost.querySelectorAll('.mfig-p')].map((panel) => {
+      const orbit = new V.Orbit(() => top.request(), { idle: { sway: 16, period: 10000 } });
+      orbit.bind(panel);
+      orbit.onGrab = () => clearTimeout(timer);            // held: the set stays
+      orbit.onRelease = () => later(2 * HX_DWELL);         // and a while longer once let go
+      top.ticks.add((t) => orbit.tick(t));
+      return { panel, orbit, view: top.add({ el: panel, scene: null, camera: null }), img: panel.querySelector('.mfig-in') };
+    });
+    hxShow = async (k, fade = true) => {
+      const my = ++turn;
+      at = k; clearTimeout(timer);
+      hxSets.forEach((b, i) => b.setAttribute('aria-pressed', String(i === k)));
+      const shown = await Promise.all(hxNames(k).map(sceneOf));
+      if (my !== turn) return;                             // another set was chosen meanwhile
+      if (fade && !still) { recHost.classList.add('swap'); await wait(HX_FADE); if (my !== turn) return; }
+      shown.forEach((s, j) => {
+        const { view, orbit, img } = slots[j], cam = s.camera;
+        Object.assign(view, { scene: s.scene, camera: cam, fit: (a) => {
+          cam.setViewOffset(a * 1000, 1000, 0, -70, a * 1000, 1000);   // a little low: the input image holds the top
+          V.poseFit(cam, s.target, s.radius, s.toCam, orbit.yaw, orbit.pitch, a);
+        } });
+        img.src = hxBase + s.name + '.jpg';
+        orbit.set(0, 0); orbit.animateTo(s.d.novel.yaw, s.d.novel.pitch, 2600);
+      });
+      top.request();
+      recHost.classList.remove('swap');
+      hxNames((k + 1) % hxSets.length).forEach((n) => sceneOf(n).catch(() => {}));   // the next set is ready when its turn comes
+      later(HX_DWELL);
+    };
+    hxStop = () => { clearTimeout(timer); turn++; };
+    hxSets.forEach((b, i) => b.addEventListener('click', () => hxShow(i)));
+
+    // The fine contact head on the canonical hand: a vertex takes the colour of its joint (coarse) or region (distance, fine).
+    const [c, h] = await Promise.all([V.getJSON(hxBase + 'contact.json'), V.getJSON(hxBase + 'hand.json')]);
+    const hd = { V: Float32Array.from(V.dec(h.V), (x) => x * h.scale) };
+    ['F', 'coarse', 'fine', 'seamC', 'seamF'].forEach((k) => { hd[k] = h[k].walk ? unwalk(V.dec(h[k])) : V.dec(h[k]); });
+    const seam = (rgb, s) => V.mix3(rgb, [1, 1, 1], s / 255 * 0.5), FAR = [0.86, 0.89, 0.95];
+    const near = (mm) => Math.pow(V.clamp(1 - Math.max(mm, 0) / 30, 0, 1), 1.5);   // within 3 cm, as on the project page
+    const paint = {
+      coarse: (i) => seam(c.coarse[hd.coarse[i]] > 0.5 ? V.CONTACT : V.HAND, hd.seamC[i]),
+      dist: (i) => seam(V.mix3(FAR, V.VIOLET, near(c.dmin[hd.fine[i]])), hd.seamF[i]),
+      fine: (i) => seam(c.fine[hd.fine[i]] > 0.5 ? V.CONTACT : V.HAND, hd.seamF[i]),
+    };
+    const all = new V.Orbit(() => bottom.request(), { minPitch: -70, maxPitch: 70, idle: { spin: 16 } });
+    bottom.ticks.add((t) => all.tick(t));
+    conHost.querySelectorAll('.mfig-p[data-step]').forEach((cell) => {
+      all.bind(cell);
+      const view = V.canonicalView(bottom, cell, hd, all, paint[cell.dataset.step], null, null, { scale: 1.14, lift: 0.03 });
+      const fit = view.fit, cam = view.camera;              // a little left and low in every cell: the first holds the input image top right
+      view.fit = (a) => { cam.setViewOffset(a * 1000, 1000, 40 * a, -40, a * 1000, 1000); fit(a); };
+    });
+
+    el.classList.add('is-ready');
+    return () => {
+      hxShow(0, false);
+      all.set(0, 0); all.rest();
+      // The canvases were sized while the panel was still scaling in: size them again once that is over.
+      const settle = () => { [top, bottom].forEach((st) => { st.resize(); st.request(); }); };
+      el.closest('.lightbox-panel').addEventListener('animationend', settle, { once: true });
+      setTimeout(settle, 500);
+    };
+  }));
+  figure('horcruxLightbox', hxFiles, (el) => hxBuild().then((replay) => replay()).catch(fail(el)), () => hxStop());
+
+  // Beyond Rigid Hands: the project page's thermal-contact view (its chapter 03), one canvas split 2 x 2 in one
+  // shared view: the contact on a camera measured from thermal imprints, then the contact of the rigid annotation,
+  // ContactOpt and the lift, each on the object in its own colours (the hand hidden, as on the page).
+  const brhBase = 'images/pubs/brh/';
+  const brhFiles = once(() => new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = brhBase + 'viewer.js'; s.onload = resolve; s.onerror = () => reject(new Error('viewer.js'));
+    document.head.appendChild(s);
+  }).then(() => window.BRH.loadScene('thermal_full15_handoff_camera', brhBase)));
+  const brhBuild = once(() => brhFiles().then((raw) => {
+    const el = document.getElementById('brhLightbox'), chips = el.querySelectorAll('.mfig-over .mfig-s');
+    const o = raw.object;
+    if (o && o.Fw) {   // the object's faces, unpacked into the base64 the viewer reads
+      const bin = atob(o.Fw), u = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+      const F = new Uint8Array(unwalk(new Int16Array(u.buffer), o.wide ? Uint32Array : Uint16Array).buffer);
+      let s = '';
+      for (let i = 0; i < F.length; i += 0x8000) s += String.fromCharCode.apply(null, F.subarray(i, i + 0x8000));
+      o.F = btoa(s); delete o.Fw;
+    }
+    const viewer = new window.BRH.Viewer(el.querySelector('canvas'), {
+      panels: (sc) => sc.states.map((_, i) => ({ track: [i], objRgb: i })),
+      object: 'solid', hand: 0, sway: 24,
+      cols: () => 2, ratio: (w) => (w < 420 ? 1.15 : 0.9),   // taller panels on a phone, for the chips
+    });
+    viewer.setScene(raw).states.forEach((st, k) => {   // the share of the measured contact missed, and of the predicted contact that is false
+      if (chips[k] && st.meta && st.meta.missed !== undefined) {
+        chips[k].innerHTML = `<i style="background:#466ec8"></i>Missed <b>${st.meta.missed}%</b><i style="background:#f08c28"></i>False <b>${st.meta.false}%</b>`;
+      }
+    });
+    el.classList.add('is-ready');
+  }));
+  figure('brhLightbox', brhFiles, (el) => brhBuild().catch(fail(el)));
 })();
