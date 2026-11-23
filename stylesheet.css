@@ -1196,6 +1196,7 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
 /* a figure's name in its top right corner, level with the legend on the left */
 .pub-thumb .lf-legend.is-tight { gap: 6px; }
 .pub-thumb .lf-legend.is-tight span { gap: 3px; }
+.pub-thumb .lf-legend.is-right { left: auto; right: 9px; font-size: 7.5px; }
 .pub-thumb .lf-tag {   /* small spaced capitals, apart from the legend's words */
   position: absolute; top: 8px; right: 9px; font-family: var(--font-sans); font-size: 7px; font-weight: 600;
   letter-spacing: 0.09em; text-transform: uppercase; color: #6b6b74; white-space: nowrap; pointer-events: none;
@@ -1254,6 +1255,19 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .lightbox .lf-t { left: 8px; top: 7px; font-size: 11px; }
   .lightbox .is-orbit .lf-t small { display: none; }
   .lightbox .lf-s { right: 6px; bottom: 6px; font-size: 10px; padding: 2px 6px; }
+}
+
+/* ZIP: one colour per method, the paper's hues (Set2) deepened to hold up as thin lines */
+.live-fig { --lf-zip: #c2307f; --lf-bar: #2b9a7a; --lf-bvip: #dd7339; --lf-bpt: #5b78d6; }
+[data-theme='dark'] .lightbox .live-fig { --lf-zip: #dc4f9a; --lf-bar: #2ea883; --lf-bvip: #d87436; --lf-bpt: #728ce4; }
+.lf-legend .m-zip { background: var(--lf-zip); }
+.lf-legend .m-bar { background: var(--lf-bar); }
+.lf-legend .m-bvip { background: var(--lf-bvip); }
+.lf-legend .m-bpt { background: var(--lf-bpt); }
+.lightbox .is-zip .lf-p.is-scrub { cursor: crosshair; touch-action: pan-y; }
+@media (max-width: 640px) {
+  .lightbox .is-zip .lf-grid { grid-template-columns: 1fr !important; }
+  .lightbox .is-zip .lf-p { aspect-ratio: 4 / 3; }
 }
 
 /* -------------------- Video thumbnails -------------------- */

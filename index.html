@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" type="text/css" href="stylesheet.css?v=20261119b" />
+  <link rel="stylesheet" type="text/css" href="stylesheet.css?v=20261123e" />
 </head>
 
 <body>
@@ -318,8 +318,9 @@
         </li>
 
         <li class="pub" id="pub-zip" data-year="2025" data-topic="optimization efficiency">
-          <figure class="pub-thumb" data-full="images/pubs/zip.svg" data-scale="0.85" data-caption="Large vision-language models are often available only through <em>black-box</em> prediction APIs, making adaptation a query-intensive process of prompt tuning without gradients, where every call incurs a cost. ZIP reduces the required queries by reparameterizing prompts in a low-rank form and clipping its zeroth-order gradient estimates. Averaged across 13 vision-language tasks, ZIP reaches the target accuracy using roughly half as many queries as the strongest baseline (left) and achieves comparable training accuracy about 8&times; sooner (right)." role="button" tabindex="0" aria-label="Enlarge figure: Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines">
+          <figure class="pub-thumb" data-full="images/pubs/zip.svg" data-scale="0.85" data-live="zipLightbox" data-caption="Large vision-language models are often available only through <em>black-box</em> prediction APIs, making adaptation a query-intensive process of prompt tuning without gradients, where every call incurs a cost. The left panel sketches this search, in which the optimizer never sees the loss surface and learns only from the model&rsquo;s outputs at the prompts it queries. ZIP reduces the required queries by reparameterizing prompts in a low-rank form and clipping its zeroth-order gradient estimates. Averaged across 13 vision-language tasks, ZIP reaches the target accuracy using roughly half as many queries as the strongest baseline (middle) and achieves comparable training accuracy about 8&times; sooner (right)." role="button" tabindex="0" aria-label="Enlarge figure: A sketch of black-box prompt search, the queries each method needs to reach a target accuracy, and training accuracy against queries for ZIP and black-box baselines">
             <img src="images/pubs/zip-thumb.png" srcset="images/pubs/zip-thumb-480.png 480w, images/pubs/zip-thumb.png 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="Queries needed to reach a target accuracy, and training accuracy versus query budget, against black-box baselines" loading="lazy" decoding="async" />
+            <div class="live-fig" id="zipThumb" aria-hidden="true"></div>
           </figure>
           <div class="pub-body">
             <h3 class="pub-title"><a href="https://arxiv.org/abs/2504.06838">ZIP: An Efficient Zeroth-order Prompt Tuning for Black-box Vision-Language Models</a></h3>
@@ -539,6 +540,7 @@
           </div>
           <p class="lf-foot"><span class="lf-legend"><span><i style="background:#c81e1e"></i>Measured heat</span><span><i style="background:#3ea055"></i>Correct</span><span><i style="background:#466ec8"></i>Missed</span><span><i style="background:#f08c28"></i>False</span></span><span>Drag to orbit</span></p>
         </div>
+        <div class="live-fig is-big is-zip" id="zipLightbox" hidden></div>
         <p class="lightbox-caption" id="lightboxCaption"></p>
       </div>
     </div>
@@ -547,6 +549,7 @@
   <script src="images/pubs/cando-airplane.js"></script>
   <script src="images/pubs/fold-esd.js"></script>
   <script src="images/pubs/cbm-noise.js"></script>
-  <script src="script.js?v=20261119b"></script>
+  <script src="images/pubs/zip-race.js"></script>
+  <script src="script.js?v=20261123e"></script>
 </body>
 </html>
