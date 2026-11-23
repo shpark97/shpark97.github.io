@@ -1290,6 +1290,12 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
 /* The preprints' loops leave the lower part of the plate empty for these, set
    like the live figures' labels: a cell per panel holding an .lf-t (and an
    .lf-s chip), or one row of words of which the clip on screen is marked. */
+/* --tu: one pixel of the desktop plate, as a share of this plate's width where container units work
+   (the desktop plate is 228px wide, 226px inside its border, which is what cqw measures). */
+.pub-thumb { --tu: 1px; }
+@supports (width: 1cqw) {
+  .pub-thumb { container-type: inline-size; --tu: calc(100cqw / 226); }
+}
 .thumb-labels {
   --lf-bad-bg: #fbe9e6;  --lf-bad: #c0392b;
   --lf-good-bg: #e3f4ea; --lf-good: #13703b;
@@ -1301,12 +1307,13 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .thumb-labels > span { position: relative; }
 .thumb-labels.is-3 { grid-template-columns: repeat(3, 1fr); }
 /* A legend beside the clip: the kinds listed with a square in their colour (--m); the one on screen is lit. */
+/* Its sizes are in --tu, a pixel of the 228px-wide desktop plate, so on a phone's wider plate it grows with the clip. */
 .thumb-labels.is-legend {
-  left: 68%; display: flex; flex-direction: column; justify-content: center; gap: 7px;
-  font-family: var(--font-sans); font-size: 10px; font-weight: 500; line-height: 1.2; white-space: nowrap; color: #a8a8b0;
+  left: 68%; display: flex; flex-direction: column; justify-content: center; gap: calc(7 * var(--tu));
+  font-family: var(--font-sans); font-size: calc(10 * var(--tu)); font-weight: 500; line-height: 1.2; white-space: nowrap; color: #a8a8b0;
 }
-.thumb-labels.is-legend > span { display: flex; align-items: center; gap: 5px; transition: color 0.3s ease; }
-.thumb-labels.is-legend i { flex: none; width: 7px; height: 7px; border-radius: 2px; background: var(--m); opacity: 0.25; transition: opacity 0.3s ease; }
+.thumb-labels.is-legend > span { display: flex; align-items: center; gap: calc(5 * var(--tu)); transition: color 0.3s ease; }
+.thumb-labels.is-legend i { flex: none; width: calc(7 * var(--tu)); height: calc(7 * var(--tu)); border-radius: calc(2 * var(--tu)); background: var(--m); opacity: 0.25; transition: opacity 0.3s ease; }
 .thumb-labels.is-legend .on { color: #26262b; font-weight: 600; }
 .thumb-labels.is-legend .on i { opacity: 1; }
 /* Labels centred at given points (--x), for panels that are not in equal thirds. */
@@ -1318,23 +1325,24 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .thumb-labels.on-live { opacity: 0; transition: opacity 0.3s ease; }
 .pub-thumb.is-live .thumb-labels.on-live { opacity: 1; }
 /* Beside a clip that walks through stages: the stages as a short timeline (the one on screen is lit) and a colour
-   key under them. The column starts right of the card (make_preprints.brh prints where it ends). */
+   key under them. The column starts right of the card (make_preprints.brh prints where it ends). Sized in --tu,
+   as the legend above. */
 .thumb-labels.is-steps {
-  left: 50.8%; display: flex; flex-direction: column; justify-content: center; gap: 12px;
+  left: 50.8%; display: flex; flex-direction: column; justify-content: center; gap: calc(12 * var(--tu));
   font-family: var(--font-sans); line-height: 1.2; white-space: nowrap;
 }
-.thumb-steps { display: flex; flex-direction: column; gap: 7px; padding-left: 12px; font-size: 9px; font-weight: 500; color: #a8a8b0; }
-.thumb-steps::before { content: ''; position: absolute; left: 2.5px; top: 5px; bottom: 5px; width: 1px; background: #e2e2e6; }
+.thumb-steps { display: flex; flex-direction: column; gap: calc(7 * var(--tu)); padding-left: calc(12 * var(--tu)); font-size: calc(9 * var(--tu)); font-weight: 500; color: #a8a8b0; }
+.thumb-steps::before { content: ''; position: absolute; left: calc(2.5 * var(--tu)); top: calc(5 * var(--tu)); bottom: calc(5 * var(--tu)); width: 1px; background: #e2e2e6; }
 .thumb-steps > span { position: relative; transition: color 0.3s ease; }
 .thumb-steps > span::before {
-  content: ''; position: absolute; left: -12px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%;
-  background: #fff; box-shadow: inset 0 0 0 1.5px #cdcdd3; transition: background 0.3s ease, box-shadow 0.3s ease;
+  content: ''; position: absolute; left: calc(-12 * var(--tu)); top: 50%; width: calc(6 * var(--tu)); height: calc(6 * var(--tu)); margin-top: calc(-3 * var(--tu)); border-radius: 50%;
+  background: #fff; box-shadow: inset 0 0 0 calc(1.5 * var(--tu)) #cdcdd3; transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 .thumb-steps > .on { color: #26262b; font-weight: 600; }
 .thumb-steps > .on::before { background: #26262b; box-shadow: none; }
-.thumb-key { display: flex; flex-direction: column; gap: 4px; padding-left: 12px; font-size: 8px; font-weight: 500; color: #55555c; }
-.thumb-key > span { display: flex; align-items: center; gap: 5px; }
-.thumb-key i { flex: none; width: 6px; height: 6px; border-radius: 1.5px; }
+.thumb-key { display: flex; flex-direction: column; gap: calc(4 * var(--tu)); padding-left: calc(12 * var(--tu)); font-size: calc(8 * var(--tu)); font-weight: 500; color: #55555c; }
+.thumb-key > span { display: flex; align-items: center; gap: calc(5 * var(--tu)); }
+.thumb-key i { flex: none; width: calc(6 * var(--tu)); height: calc(6 * var(--tu)); border-radius: calc(1.5 * var(--tu)); }
 
 /* -------------------- Lightbox figures built from media -------------------- */
 /* The preprints open clips (CodeHOI) or the project pages' own WebGL viewers
@@ -1412,24 +1420,22 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .hoi-q::before { content: '\201C'; }
 .hoi-q::after { content: '\201D'; margin-left: 1px; }
 
-/* HORCRUX: a three.js canvas over each row. Above, HORCRUX's reconstructions with their
-   input image inset, three at a time (one hand, then two hands); below, the fine contact
-   head on one example: coarse contact and region distance, then the fine contact. */
+/* HORCRUX: a three.js canvas over each row. Above, HORCRUX's reconstructions of three
+   one-hand examples with their input image inset; below, the fine contact head on one
+   example: coarse contact and region distance, then the fine contact. */
 .lightbox .mfig.is-meshes { width: min(860px, calc(100vw - 90px), calc((100vh - 350px) * 1.5)); min-width: min(520px, calc(100vw - 72px)); }
 .mfig-stage3d { position: relative; display: grid; gap: 10px; }
-/* each row under a heading on a hairline; the examples' toggle sits in the middle of the first */
-.hx-head { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 14px; }
-.hx-head:not(.is-top) { grid-template-columns: minmax(0, 1fr); margin-top: 12px; }
+/* each row under a heading on a hairline; the first as tall as the close button's row, its hairline clear of the button */
+.hx-head { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; }
+.hx-head.is-top { min-height: 32px; margin-right: 46px; }
+.hx-head:not(.is-top) { margin-top: 12px; }
 .hx-h {
   display: flex; align-items: center; gap: 12px; min-width: 0; white-space: nowrap;
   font: 600 11px/1 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft);
 }
 .hx-h small { margin-left: -3px; font-size: 11.5px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--ink-mute); }
-.hx-h::after, .hx-rule { content: ''; flex: 1; height: 1px; background: var(--line); }
-.hx-rule { margin-right: 46px; }   /* clear of the close button */
+.hx-h::after { content: ''; flex: 1; height: 1px; background: var(--line); }
 .stage-host { position: relative; }
-.hx-recon .stage-canvas, .hx-recon .mfig-in { transition: opacity 0.28s ease; }
-.hx-recon.swap .stage-canvas, .hx-recon.swap .mfig-in { opacity: 0; }
 /* the columns of the row above; the steps are linked by a + and an arrow on the gaps between them */
 .hx-c2f { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .is-meshes .hx-c2f .mfig-p { aspect-ratio: 1 / 0.92; }
@@ -1486,10 +1492,6 @@ u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .lightbox .mfig.is-meshes { min-width: 0; }
   .is-meshes .mfig-grid { gap: 5px; }
   .mfig-stage3d { gap: 8px; }
-  .hx-head.is-top { grid-template-columns: minmax(0, 1fr); justify-items: center; row-gap: 12px; }   /* the toggle above, the heading below */
-  .hx-head.is-top .mfig-seg { order: -1; }
-  .hx-head.is-top .hx-h { justify-self: stretch; }
-  .hx-rule { display: none; }
   .hx-head:not(.is-top) { margin-top: 8px; }
   .hx-h { font-size: 10px; gap: 8px; }
   .hx-h small { font-size: 10.5px; }

@@ -63,10 +63,12 @@ export class Stage {
     this.renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.setClearColor(0x000000, 0);
+    this.world = world(this.renderer);
     this.resize();
   }
   sleep() {   // far from the screen: give the context back (browsers allow only a handful at once)
     if (!this.renderer) return;
+    if (this.world) { this.world.dispose(); this.world = null; }
     this.renderer.dispose(); this.renderer.forceContextLoss(); this.canvas.remove(); this.renderer = this.canvas = null;
   }
   resize() {
@@ -93,25 +95,35 @@ export class Stage {
       if (w < 2 || h < 2) continue;
       R.setViewport(x, H - y - h, w, h); R.setScissor(x + 1, H - y - h + 1, w - 2, h - 2);   // inside the 1px border of the tile
       if (v.fit) v.fit(w / h);
+      v.scene.environment = this.world;
       R.render(v.scene, v.camera);
     }
   }
 }
 
+/* the lighting of the paper's Cycles figures (paper/fig_code/teaser_v8_blender.py, view transform Standard), without their shadows: a
+   uniform white world of strength 0.42 (diffuse and its soft reflection at grazing angles), a key light of 2.0 from the upper left and a
+   fill of 0.45 from the right, both fixed to the camera. Directions = the way the light travels, in the camera frame (x right, y up,
+   -z forward). */
+const KEY_DIR = new THREE.Vector3(0.45, -0.55, -0.70).normalize(), FILL_DIR = new THREE.Vector3(-0.75, 0.05, -0.65).normalize();
 export function makeScene(camera) {
-  const scene = new THREE.Scene();
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x8f98aa, 1.25));
-  const key = new THREE.DirectionalLight(0xffffff, 1.85), aim = new THREE.Object3D();
-  key.position.set(0.4, 0.55, 0.2); aim.position.set(0, 0, -1); camera.add(key); camera.add(aim); key.target = aim;
-  const rim = new THREE.DirectionalLight(0xffffff, 0.45); rim.position.set(-0.6, -0.2, -0.8); camera.add(rim);
+  const scene = new THREE.Scene(), aim = new THREE.Object3D(); aim.position.set(0, 0, -1); camera.add(aim);
+  for (const [dir, e] of [[KEY_DIR, 2.0], [FILL_DIR, 0.45]]) {
+    const l = new THREE.DirectionalLight(0xffffff, e); l.position.copy(aim.position).sub(dir); l.target = aim; camera.add(l);
+  }
   scene.add(camera);
   return scene;
+}
+function world(renderer) {   // the uniform world as an environment map (one per WebGL context)
+  const sc = new THREE.Scene(); sc.background = new THREE.Color().setScalar(0.42);   // linear radiance
+  const pm = new THREE.PMREMGenerator(renderer), rt = pm.fromScene(sc, 0); pm.dispose();
+  return rt.texture;
 }
 export function disposeScene(scene) {
   if (scene) scene.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); });
 }
-export function mat(rgb, vertexColors = false) {
-  const m = new THREE.MeshStandardMaterial({ roughness: 0.62, metalness: 0, vertexColors, side: THREE.DoubleSide });
+export function mat(rgb, vertexColors = false, roughness = 0.55) {   // 0.55 the hands, 0.42 the objects (as the Cycles figures)
+  const m = new THREE.MeshStandardMaterial({ roughness, metalness: 0, vertexColors, side: THREE.DoubleSide });
   if (vertexColors) m.color.setRGB(1, 1, 1); else m.color.setRGB(rgb[0], rgb[1], rgb[2], THREE.SRGBColorSpace);
   return m;
 }
@@ -130,6 +142,44 @@ export function geometry(V, F) {
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(V instanceof Float32Array ? V : new Float32Array(V), 3));
   g.setIndex(new THREE.BufferAttribute(F, 1)); g.computeVertexNormals(); g.computeBoundingSphere();
+  return g;
+}
+/* an object mesh shaded as the Cycles figures shade it (teaser_v8_render.py welds, teaser_v8_blender.py smooths with a 40 degree crease):
+   the copies of a vertex that the dataset meshes keep at texture seams (the H2O meshes at every face) welded, normals smooth across edges
+   flatter than `crease` and sharp across steeper ones; C = per-vertex colors (0..255) or null. Drawn unindexed (one normal per corner). */
+export function solid(V, F, C = null, crease = 40) {
+  const nv = V.length / 3, nf = F.length / 3, weld = new Int32Array(nv), ids = new Map();
+  for (let i = 0; i < nv; i++) {
+    const k = `${Math.round(V[3 * i] * 1e6)},${Math.round(V[3 * i + 1] * 1e6)},${Math.round(V[3 * i + 2] * 1e6)}`;
+    let w = ids.get(k); if (w === undefined) { w = ids.size; ids.set(k, w); } weld[i] = w;
+  }
+  const fn = new Float32Array(3 * nf), un = new Float32Array(3 * nf), deg = new Int32Array(ids.size + 1);
+  for (let f = 0; f < nf; f++) {   // area-weighted and unit face normals, and the faces about each welded vertex
+    const a = 3 * F[3 * f], b = 3 * F[3 * f + 1], c = 3 * F[3 * f + 2];
+    const ux = V[b] - V[a], uy = V[b + 1] - V[a + 1], uz = V[b + 2] - V[a + 2], vx = V[c] - V[a], vy = V[c + 1] - V[a + 1], vz = V[c + 2] - V[a + 2];
+    const x = uy * vz - uz * vy, y = uz * vx - ux * vz, z = ux * vy - uy * vx, l = Math.hypot(x, y, z) || 1;
+    fn[3 * f] = x; fn[3 * f + 1] = y; fn[3 * f + 2] = z; un[3 * f] = x / l; un[3 * f + 1] = y / l; un[3 * f + 2] = z / l;
+    for (let k = 0; k < 3; k++) deg[weld[F[3 * f + k]] + 1]++;
+  }
+  for (let w = 0; w < ids.size; w++) deg[w + 1] += deg[w];
+  const inc = new Int32Array(3 * nf), fill = deg.slice(0, ids.size);
+  for (let f = 0; f < nf; f++) for (let k = 0; k < 3; k++) inc[fill[weld[F[3 * f + k]]]++] = f;
+  const cos = Math.cos(crease * D), P = new Float32Array(9 * nf), N = new Float32Array(9 * nf), K = C ? new Float32Array(9 * nf) : null;
+  for (let f = 0; f < nf; f++) for (let k = 0; k < 3; k++) {
+    const i = F[3 * f + k], w = weld[i], o = 9 * f + 3 * k;
+    let x = 0, y = 0, z = 0;
+    for (let j = deg[w]; j < deg[w + 1]; j++) {
+      const g = inc[j];
+      if (un[3 * f] * un[3 * g] + un[3 * f + 1] * un[3 * g + 1] + un[3 * f + 2] * un[3 * g + 2] >= cos) { x += fn[3 * g]; y += fn[3 * g + 1]; z += fn[3 * g + 2]; }
+    }
+    const l = Math.hypot(x, y, z) || 1;
+    N[o] = x / l; N[o + 1] = y / l; N[o + 2] = z / l; P[o] = V[3 * i]; P[o + 1] = V[3 * i + 1]; P[o + 2] = V[3 * i + 2];
+    if (K) { K[o] = lin(C[3 * i] / 255); K[o + 1] = lin(C[3 * i + 1] / 255); K[o + 2] = lin(C[3 * i + 2] / 255); }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(P, 3)); g.setAttribute('normal', new THREE.BufferAttribute(N, 3));
+  if (K) g.setAttribute('color', new THREE.BufferAttribute(K, 3));
+  g.computeBoundingSphere();
   return g;
 }
 export function radiusAbout(target, arrays) {   // largest distance of the vertices from the target
@@ -157,7 +207,7 @@ export class Orbit {
     el.tabIndex = 0;
     el.addEventListener('dragstart', e => e.preventDefault());   // a drag turns the view, it never picks up an image
     el.addEventListener('pointerdown', e => {
-      if (e.button !== 0) return;
+      if (e.button !== 0 || e.target.closest('button, a')) return;   // a control inside the view (e.g. Reset view) gets its own click
       id = e.pointerId; last = [e.clientX, e.clientY]; el.classList.add('dragging'); this.anim = null; this.touched = this.held = true;
       try { el.setPointerCapture(id); } catch (err) { /* the pointer is already gone */ }
       if (this.onGrab) this.onGrab();

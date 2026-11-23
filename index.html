@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" type="text/css" href="stylesheet.css?v=20261123e" />
+  <link rel="stylesheet" type="text/css" href="stylesheet.css?v=20261123g" />
 </head>
 
 <body>
@@ -91,7 +91,7 @@
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v8M8 7v.01M12 18v-5a2 2 0 0 1 4 0v5M12 13v5"/></svg>
             LinkedIn
           </a>
-          <a class="chip" href="cv.pdf" target="_blank" rel="noopener">
+          <a class="chip" href="cv.pdf?v=20261123" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
             CV
           </a>
@@ -115,7 +115,7 @@
         <button class="toggle-news" id="toggleNews" aria-expanded="false">Show all</button>
       </div>
       <ul class="news-list" id="newsList">
-        <li><time>Nov 2026</time><p>Released three preprints on 3D and 4D hand-object interaction: <a href="#pub-codehoi" data-pub-link>CodeHOI</a>, <a href="#pub-horcrux" data-pub-link>HORCRUX</a>, and <a href="#pub-brh" data-pub-link>Beyond Rigid Hands</a>.</p></li>
+        <li><time>Nov 2026</time><p>Released three preprints on hand-object interaction: <a href="#pub-codehoi" data-pub-link>CodeHOI</a> for physically plausible 4D interaction, <a href="#pub-horcrux" data-pub-link>HORCRUX</a> for single-image reconstruction, and <a href="#pub-brh" data-pub-link>Beyond Rigid Hands</a> for contact-consistent hand meshes.</p></li>
         <li><time>Aug 2026</time><p>Our paper on recovering black-box 3D models from pose shifts was accepted to <strong>WACV 2027</strong> <span style="white-space:nowrap">(Round 1).</span></p></li>
         <li><time>Jun 2026</time><p>Our papers on efficient OOD detection and monocular avatar reconstruction were accepted to <strong>ECCV 2026</strong>.</p></li>
         <li><time>Jan 2026</time><p>Joined the <a href="https://www.keti.re.kr/main/main.php">Korea Electronics Technology Institute (KETI)</a> as a researcher, working on 3D vision and physical AI under <a href="https://scholar.google.com/citations?user=VUj1ZWoAAAAJ&hl=en">Dr. Min-Gyu Park</a>.</p></li>
@@ -213,9 +213,9 @@
         </li>
 
         <li class="pub" id="pub-horcrux" data-year="2027" data-topic="3d robustness optimization">
-          <figure class="pub-thumb" data-full="images/pubs/horcrux-thumb.jpg" data-live="horcruxLightbox" data-caption="HORCRUX reconstructs the hands and an unseen object from a monocular image in a single feed-forward pass, with coarse-to-fine contact estimation. A frozen foundation model encodes the object from its mesh, so new objects need no retraining, and coarse per-joint contact is resolved over finer hand regions using the reconstructed geometry." role="button" tabindex="0" aria-label="Open figure: A photo of a hand grasping a mug on its side, its 3D reconstruction, and the estimated contact marked on an open hand">
-            <img src="images/pubs/horcrux-thumb.jpg" srcset="images/pubs/horcrux-thumb-480.jpg 480w, images/pubs/horcrux-thumb.jpg 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="A photo of a hand grasping a mug on its side, its 3D reconstruction, and the estimated contact marked on an open hand" loading="lazy" decoding="async" />
-            <video class="thumb-video" data-src="images/pubs/horcrux.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+          <figure class="pub-thumb" data-full="images/pubs/horcrux-thumb.jpg?v=20261123" data-live="horcruxLightbox" data-caption="HORCRUX reconstructs the hands and an unseen object from a monocular image in a single feed-forward pass, with coarse-to-fine contact estimation. A frozen foundation model encodes the object from its mesh, so new objects need no retraining, and coarse per-joint contact is resolved over finer hand regions using the reconstructed geometry." role="button" tabindex="0" aria-label="Open figure: A photo of a hand grasping a mug on its side, its 3D reconstruction, and the estimated contact marked on an open hand">
+            <img src="images/pubs/horcrux-thumb.jpg?v=20261123" srcset="images/pubs/horcrux-thumb-480.jpg?v=20261123 480w, images/pubs/horcrux-thumb.jpg?v=20261123 960w" sizes="(max-width: 760px) calc(100vw - 40px), 228px" alt="A photo of a hand grasping a mug on its side, its 3D reconstruction, and the estimated contact marked on an open hand" loading="lazy" decoding="async" />
+            <video class="thumb-video" data-src="images/pubs/horcrux.mp4?v=20261123" muted loop playsinline preload="none" aria-hidden="true"></video>
             <div class="thumb-labels is-3" aria-hidden="true"><span><span class="lf-t solo">Input</span></span><span><span class="lf-t solo">Reconstruction</span></span><span><span class="lf-t solo">Contact</span></span></div>
           </figure>
           <div class="pub-body">
@@ -479,7 +479,7 @@
             </div>
             <div class="hoi-set" data-mode="gen" data-kind="deformable" style="--m:#eb6834" data-s="5.93">
               <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_td3.mp4" data-poster="images/pubs/codehoi/gen_td3.jpg" muted loop playsinline preload="none" aria-label="Generated: Pull the slime between your hands until it is twice as long as it was."></video></div><figcaption class="hoi-in"><span class="hoi-bubble" role="img" aria-label="Text only"><svg viewBox="0 0 48 40" aria-hidden="true"><path d="M8 2h32a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H20l-9 8v-8H8a6 6 0 0 1-6-6V8a6 6 0 0 1 6-6z"/><circle cx="14" cy="16" r="3"/><circle cx="24" cy="16" r="3"/><circle cx="34" cy="16" r="3"/></svg></span><blockquote class="hoi-q">Pull the slime between your hands until it is twice as long as it was.</blockquote></figcaption></figure>
-              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_sd6.mp4" data-poster="images/pubs/codehoi/gen_sd6.jpg" muted loop playsinline preload="none" aria-label="Generated: Squeeze the soft ring between your thumb and index finger until its hole closes, then let it go."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_sd6.jpg" alt="The input 3D scene" loading="lazy" draggable="false" /><blockquote class="hoi-q">Squeeze the soft ring between your thumb and index finger until its hole closes, then let it go.</blockquote></figcaption></figure>
+              <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_sd6.mp4?v=20261123" data-poster="images/pubs/codehoi/gen_sd6.jpg?v=20261123" muted loop playsinline preload="none" aria-label="Generated: Squeeze the soft ring between your thumb and index finger until its hole closes, then let it go."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_sd6.jpg?v=20261123" alt="The input 3D scene" loading="lazy" draggable="false" /><blockquote class="hoi-q">Squeeze the soft ring between your thumb and index finger until its hole closes, then let it go.</blockquote></figcaption></figure>
             </div>
             <div class="hoi-set" data-mode="gen" data-kind="codim" style="--m:#1baf7a" data-s="8.83">
               <figure class="mfig-p"><div class="mfig-v"><video data-src="images/pubs/codehoi/gen_ic5.mp4" data-poster="images/pubs/codehoi/gen_ic5.jpg" muted loop playsinline preload="none" aria-label="Generated: Pull one tissue out of the box."></video></div><figcaption class="hoi-in"><img src="images/pubs/codehoi/in_ic5.jpg" alt="The input photograph" loading="lazy" draggable="false" /><blockquote class="hoi-q">Pull one tissue out of the box.</blockquote></figcaption></figure>
@@ -509,8 +509,8 @@
         </div>
         <div class="mfig is-meshes" id="horcruxLightbox" hidden>
           <div class="mfig-stage3d">
-            <div class="hx-head is-top"><span class="hx-h">Reconstruction</span><div class="mfig-seg" role="group" aria-label="Examples"><button type="button" data-set="dexycb_25636,dexycb_84689,oakink_17116" aria-pressed="true">One hand</button><button type="button" data-set="oakink2_990,oakink2_1718,h2o_2145" aria-pressed="false">Two hands</button></div><span class="hx-rule"></span></div>
-            <div class="mfig-grid hx-recon stage-host">
+            <div class="hx-head is-top"><span class="hx-h">Reconstruction</span></div>
+            <div class="mfig-grid hx-recon stage-host" data-set="dexycb_25636,dexycb_84689,oakink_17486">
               <div class="mfig-p" aria-label="HORCRUX's reconstruction, turning in 3D"><img class="mfig-in" alt="Input image" draggable="false" /></div>
               <div class="mfig-p" aria-label="HORCRUX's reconstruction, turning in 3D"><img class="mfig-in" alt="Input image" draggable="false" /></div>
               <div class="mfig-p" aria-label="HORCRUX's reconstruction, turning in 3D"><img class="mfig-in" alt="Input image" draggable="false" /></div>
@@ -550,6 +550,6 @@
   <script src="images/pubs/fold-esd.js"></script>
   <script src="images/pubs/cbm-noise.js"></script>
   <script src="images/pubs/zip-race.js"></script>
-  <script src="script.js?v=20261123e"></script>
+  <script src="script.js?v=20261123i"></script>
 </body>
 </html>

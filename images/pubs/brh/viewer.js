@@ -62,7 +62,7 @@
       for (let i = 0; i < o.nv; i++)
         for (let k = 0; k < 3; k++) OV[3 * i + k] = o.lo[k] + ((o.hi[k] - o.lo[k]) * q[3 * i + k]) / 65535;
       const OF = o.wide ? u32(o.F) : u16(o.F);
-      sc.obj = { V: OV, N: vertexNormals(OV, OF), F: OF, wide: !!o.wide, rgb: (o.rgb || []).map(bytes) };
+      sc.obj = { V: OV, N: vertexNormals(OV, OF), F: OF, wide: !!o.wide, rgb: (o.rgb || []).map(bytes), E: o.E ? (o.wide ? u32(o.E) : u16(o.E)) : null };
     }
     return sc;
   }
@@ -112,7 +112,7 @@ precision highp float;
 in vec3 vN;
 in float vSd;
 in vec3 vCol;
-uniform int uColor;       // 0 signed distance, 1 vertex color, 2 glass
+uniform int uColor;       // 0 signed distance, 1 vertex color, 2 glass, 3 crease line
 uniform float uAlpha;
 out vec4 o;
 const vec3 SKIN = vec3(0.87, 0.67, 0.55), GREEN = vec3(0.12, 0.60, 0.27), RED = vec3(0.82, 0.08, 0.09), GLASS = vec3(0.52, 0.63, 0.79);
@@ -123,6 +123,7 @@ vec3 ramp(float s) {
   return mix(inside, c, smoothstep(-1.0 - w, -1.0 + w, s));
 }
 void main() {
+  if (uColor == 3) { o = vec4(vCol * 0.55, uAlpha); return; }
   vec3 n = normalize(vN);
   if (!gl_FrontFacing) n = -n;
   float head = max(n.z, 0.0);
@@ -249,6 +250,7 @@ void main() {
       if (sc.obj) {
         this.bufs.opos = mk(gl.ARRAY_BUFFER, sc.obj.V); this.bufs.onrm = mk(gl.ARRAY_BUFFER, sc.obj.N); this.bufs.oidx = mk(gl.ELEMENT_ARRAY_BUFFER, sc.obj.F);
         this.bufs.orgb = sc.obj.rgb.map((c) => mk(gl.ARRAY_BUFFER, c));
+        this.bufs.oedge = sc.obj.E ? mk(gl.ELEMENT_ARRAY_BUFFER, sc.obj.E) : null;
       }
       this.scene = sc;
       this.panels = this.opts.panels ? this.opts.panels(sc) : [{ track: sc.states.map((_, i) => i) }];
@@ -396,7 +398,14 @@ void main() {
       else { this._const(6, [1, 1, 1]); this._const(7, [1, 1, 1]); }
       gl.uniform1f(this.u.uT, 0);
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, B.oidx);
-      this._mesh(sc.obj.F.length, sc.obj.wide ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT, solid ? 1 : 2, alpha);
+      const type = sc.obj.wide ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT, lines = B.oedge && alpha >= 0.999;
+      if (lines) { gl.enable(gl.POLYGON_OFFSET_FILL); gl.polygonOffset(1, 1); }      // the crease lines win the depth test on their faces
+      this._mesh(sc.obj.F.length, type, solid ? 1 : 2, alpha);
+      if (!lines) return;
+      gl.disable(gl.POLYGON_OFFSET_FILL);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, B.oedge);
+      gl.uniform1i(this.u.uColor, 3);
+      gl.drawElements(gl.LINES, sc.obj.E.length, type, 0);
     }
 
     _draw() {
