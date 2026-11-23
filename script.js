@@ -666,3 +666,391 @@ function liveCanvas(cv, big) {
     draw(cv, paint, big) { paint(cv, big); },
   });
 })();
+
+// ----- ZIP: prompt tuning through a black box -----
+// Left, a sketch of zeroth-order search. The loss surface is out of sight (faint
+// contours): each step queries the model at two nearby prompts and moves on those
+// two outputs alone, and the surface comes into view only around what has been
+// queried. Right, the paper's train-accuracy curves (mean over 13 tasks) drawn as
+// the query count runs up. The lightbox adds, on the same count, the queries each
+// method needs to reach the target accuracy, and reads the curves under the pointer.
+(function () {
+  const data = window.ZIP_RACE;
+  const boxRoot = document.getElementById('zipLightbox');
+  if (!data) return;
+  const METHODS = [   // drawn in this order, so ZIP ends up on top
+    { key: 'BAR', name: 'BAR', cls: 'm-bar' },
+    { key: 'BlackVIP', name: 'BlackVIP', cls: 'm-bvip' },
+    { key: 'BPTVLM', name: 'BPT-VLM', cls: 'm-bpt' },
+    { key: 'ZIP', name: 'ZIP', cls: 'm-zip' },
+  ];
+  const STEP = data.step, QMAX = data.curves.ZIP.length * STEP;   // 50 queries a point, 5,000 in all
+  const LEAD = 500, SWEEP = 6000, HOLD = 2800, FADE = 500, LOOP = LEAD + SWEEP + HOLD + FADE;   // ms
+  const EASE = 1.6;   // the count runs slower early on, while the bars fill
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // BlackVIP's best accuracy, the first point where ZIP gets there, and the paper's "~8x" from them
+  const bestQ = (data.best.at + 1) * STEP, zipQ = (data.best.zip + 1) * STEP;
+  const fold = Math.floor(data.best.at / (data.best.zip + 1));
+  const fmt = (q) => Math.round(q).toLocaleString('en-US');
+  const clamp = (v) => Math.max(0, Math.min(1, v));
+  const ease = (e) => (e < 0.5 ? 2 * e * e : 1 - (2 - 2 * e) ** 2 / 2);
+  const s0 = performance.now();   // the sketch's clock
+  let t0 = s0;                    // the query count's clock, moved when the pointer lets go of it
+  let scrub = null;               // the query count under the pointer in the lightbox, if any
+
+  function clock() {
+    if (scrub !== null && (!boxRoot || boxRoot.hidden)) release();   // the lightbox closed under the pointer
+    const t = still ? LEAD + SWEEP + HOLD / 2 : (performance.now() - t0) % LOOP;
+    if (scrub !== null) return { q: scrub, fade: 1, note: scrub >= bestQ ? 1 : 0 };
+    return {
+      q: QMAX * clamp((t - LEAD) / SWEEP) ** EASE,
+      fade: 1 - clamp((t - LEAD - SWEEP - HOLD) / FADE),
+      note: clamp((t - LEAD - SWEEP) / 400),
+    };
+  }
+  // Let go of the pointer's count and run on from it.
+  function release() {
+    if (scrub === null) return;
+    t0 = performance.now() - (LEAD + SWEEP * (scrub / QMAX) ** (1 / EASE));
+    scrub = null;
+  }
+  // Train accuracy after q queries, between the plotted points; null before the first.
+  function accAt(ys, q) {
+    const i = q / STEP - 1;
+    if (i < 0) return null;
+    const k = Math.min(ys.length - 2, Math.floor(i));
+    return ys[k] + (ys[k + 1] - ys[k]) * Math.min(1, i - k);
+  }
+  // Colours: the thumbnail stays a light plate in both themes; the lightbox follows the page.
+  function inks(cv, big) {
+    const style = getComputedStyle(cv.closest('.live-fig')), page = getComputedStyle(document.documentElement);
+    const v = (n) => page.getPropertyValue(n).trim();
+    const color = {};
+    METHODS.forEach((m) => { color[m.key] = style.getPropertyValue(`--lf-${m.cls.slice(2)}`).trim(); });
+    return big
+      ? { color, line: v('--line'), mute: v('--ink-mute'), soft: v('--ink-soft'), ink: v('--ink'), card: v('--bg-elev') }
+      : { color, line: '#e2e2e6', mute: '#8a8a92', soft: '#55555c', ink: '#3f3f46', card: '#fff' };
+  }
+
+  // ---- The sketch: a surface the optimizer never sees, and a zeroth-order walk down it ----
+  // A curved valley, tilted a little; its floor at the centre.
+  const TILT = -0.26, ct = Math.cos(TILT), stl = Math.sin(TILT);
+  const surf = (x, y) => {
+    const a = ct * x + stl * y, b = -stl * x + ct * y;
+    return 0.5 * a * a + 2.4 * (b - 0.2 * a * a + 0.06) ** 2;
+  };
+  const LEVELS = [0.025, 0.08, 0.16, 0.27, 0.41, 0.6];
+  // Iso-lines by marching squares, as flat [x0, y0, x1, y1, ...] segment lists.
+  const GRID = 90, G0 = -1.6, G1 = 1.6;
+  const contours = LEVELS.map((c) => {
+    const s = (G1 - G0) / GRID, n = GRID + 1, g = new Float32Array(n * n), seg = [];
+    for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) g[j * n + i] = surf(G0 + i * s, G0 + j * s) - c;
+    const cross = (i0, j0, i1, j1) => {
+      const a = g[j0 * n + i0], e = a / (a - g[j1 * n + i1]);
+      return [G0 + (i0 + (i1 - i0) * e) * s, G0 + (j0 + (j1 - j0) * e) * s];
+    };
+    for (let j = 0; j < GRID; j++) for (let i = 0; i < GRID; i++) {
+      const c4 = [[i, j], [i + 1, j], [i + 1, j + 1], [i, j + 1]], pts = [];
+      for (let k = 0; k < 4; k++) {
+        const [a, b] = [c4[k], c4[(k + 1) % 4]];
+        if ((g[a[1] * n + a[0]] < 0) !== (g[b[1] * n + b[0]] < 0)) pts.push(...cross(a[0], a[1], b[0], b[1]));
+      }
+      seg.push(...pts.slice(0, 8));
+    }
+    return seg;
+  });
+  // The box the outermost line fills, which the sketch is fitted to.
+  const outer = contours[contours.length - 1], bb = [Infinity, Infinity, -Infinity, -Infinity];
+  for (let i = 0; i < outer.length; i += 2) {
+    bb[0] = Math.min(bb[0], outer[i]); bb[2] = Math.max(bb[2], outer[i]);
+    bb[1] = Math.min(bb[1], outer[i + 1]); bb[3] = Math.max(bb[3], outer[i + 1]);
+  }
+  // Each step: a random direction, the surface queried a little either side, a move by the
+  // difference, clipped (as ZIP clips its estimates). A fixed seed, so every loop is the same walk.
+  const MU = 0.12, LR = 0.2, CLIP = 1.3, NSTEP = 18;
+  const walk = (function () {
+    let s = 185;
+    const rnd = () => {
+      s = (s + 0x6D2B79F5) >>> 0;
+      let t = Math.imul(s ^ (s >>> 15), s | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    let p = [-0.905, 0.489];   // up one arm of the valley
+    const out = [];
+    for (let k = 0; k < NSTEP; k++) {
+      const a = rnd() * 2 * Math.PI, u = [Math.cos(a), Math.sin(a)];
+      const plus = [p[0] + MU * u[0], p[1] + MU * u[1]], minus = [p[0] - MU * u[0], p[1] - MU * u[1]];
+      const d = Math.max(-CLIP, Math.min(CLIP, (surf(...plus) - surf(...minus)) / (2 * MU)));
+      const next = [p[0] - LR * d * u[0], p[1] - LR * d * u[1]];
+      out.push({ p, plus, minus, next, upPlus: d > 0 });
+      p = next;
+    }
+    return out;
+  })();
+  const WSTEP = 400, WALK = NSTEP * WSTEP;   // ms a step
+
+  function drawSearch(cv, big) {
+    const f = liveCanvas(cv, big);
+    if (!f) return;
+    const { ctx, w, h, dpr: u, bg } = f;
+    const k = inks(cv, big), surface = `rgb(${bg[0]},${bg[1]},${bg[2]})`;
+    const t = still ? LEAD + WALK + 1 : (performance.now() - s0) % LOOP;
+    const fade = still ? 1 : 1 - clamp((t - LEAD - SWEEP - HOLD) / FADE);
+    // Fit the surface into the panel, clear of the labels above and below.
+    const top = (big ? 60 : 25) * u, bot = h - (big ? 34 : 28) * u, pad = (big ? 12 : 11) * u;
+    const sc = Math.min((w - 2 * pad) / (bb[2] - bb[0]), (bot - top) / (bb[3] - bb[1]));
+    const cx = w / 2, cy = (top + bot) / 2, mx = (bb[0] + bb[2]) / 2, my = (bb[1] + bb[3]) / 2;
+    const P = (q) => [cx + (q[0] - mx) * sc, cy - (q[1] - my) * sc];
+    const lines = () => {
+      ctx.beginPath();
+      contours.forEach((seg) => {
+        for (let i = 0; i < seg.length; i += 4) {
+          const a = P([seg[i], seg[i + 1]]), b = P([seg[i + 2], seg[i + 3]]);
+          ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]);
+        }
+      });
+      ctx.stroke();
+    };
+
+    // Where the walk is: step i, and how far into it (probes show, then the prompt moves).
+    const tw = Math.min(WALK, Math.max(0, t - LEAD));
+    const i = Math.min(NSTEP - 1, Math.floor(tw / WSTEP)), p = tw >= WALK ? 1 : tw / WSTEP - i;
+    const st = walk[i], probe = clamp(p / 0.18) * (1 - clamp((p - 0.72) / 0.22));
+    const m = ease(clamp((p - 0.42) / 0.46));
+    const cur = [st.p[0] + (st.next[0] - st.p[0]) * m, st.p[1] + (st.next[1] - st.p[1]) * m];
+
+    // The surface: faint everywhere, clearer around every prompt queried so far.
+    ctx.lineWidth = u; ctx.lineCap = 'round';
+    ctx.strokeStyle = k.line; ctx.globalAlpha = big ? 0.9 : 0.75;
+    lines();
+    const seen = [walk[0].p];
+    for (let j = 0; j <= i; j++) if (j < i || (tw > 0 && p > 0.05)) seen.push(walk[j].plus, walk[j].minus);
+    const R = 0.34 * sc;
+    ctx.strokeStyle = k.mute;
+    [1, 0.72, 0.45].forEach((r) => {
+      ctx.save();
+      ctx.beginPath();
+      seen.forEach((q, j) => {
+        const grow = j >= seen.length - 2 && tw < WALK && j > 0 ? clamp(p / 0.3) : 1;   // the newest two open up
+        const c = P(q);
+        ctx.moveTo(c[0] + R * r * grow, c[1]); ctx.arc(c[0], c[1], R * r * grow, 0, 6.2832);
+      });
+      ctx.clip();
+      ctx.globalAlpha = (big ? 0.26 : 0.3) * fade;
+      lines();
+      ctx.restore();
+    });
+
+    // The path so far, with a dot where each step landed.
+    const zip = k.color.ZIP, path = walk.slice(0, i + 1).map((s) => P(s.p));
+    path.push(P(cur));
+    ctx.globalAlpha = 0.55 * fade; ctx.strokeStyle = ctx.fillStyle = zip;
+    ctx.lineWidth = (big ? 1.8 : 1.2) * u; ctx.lineJoin = 'round';
+    ctx.beginPath(); path.forEach((q, j) => (j ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]))); ctx.stroke();
+    path.slice(1, -1).forEach((q) => { ctx.beginPath(); ctx.arc(q[0], q[1], (big ? 2 : 1.3) * u, 0, 6.2832); ctx.fill(); });
+
+    // This step's two queries: the lower output filled, the higher one open.
+    if (probe > 0 && tw < WALK) {
+      const a = P(st.plus), b = P(st.minus), r = (big ? 3.6 : 2.2) * u;
+      ctx.globalAlpha = probe * fade; ctx.strokeStyle = k.mute; ctx.lineWidth = u;
+      ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+      [[a, !st.upPlus], [b, st.upPlus]].forEach(([q, low]) => {
+        ctx.fillStyle = low ? k.mute : surface; ctx.lineWidth = (big ? 1.4 : 1) * u;
+        ctx.beginPath(); ctx.arc(q[0], q[1], r, 0, 6.2832); ctx.fill(); ctx.stroke();
+      });
+    }
+
+    // The prompt being tuned.
+    const c = P(cur);
+    ctx.globalAlpha = fade; ctx.fillStyle = zip; ctx.strokeStyle = surface; ctx.lineWidth = (big ? 2 : 1.5) * u;
+    ctx.beginPath(); ctx.arc(c[0], c[1], (big ? 5 : 3.2) * u, 0, 6.2832); ctx.fill(); ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    if (big) {   // a key along the bottom
+      const y = h - 16 * u, r = 3.6 * u;
+      ctx.font = `${11 * u}px Inter, sans-serif`; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+      let x = 14 * u;
+      ctx.strokeStyle = k.mute; ctx.fillStyle = surface; ctx.lineWidth = 1.4 * u;
+      ctx.beginPath(); ctx.arc(x + r, y, r, 0, 6.2832); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = k.mute; ctx.fillText('Query', x + 2 * r + 6 * u, y);
+      x += 2 * r + 6 * u + ctx.measureText('Query').width + 16 * u;
+      ctx.fillStyle = zip;
+      ctx.beginPath(); ctx.arc(x + r, y, r + 0.8 * u, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = k.mute; ctx.fillText('Prompt', x + 2 * r + 6 * u, y);
+    }
+  }
+
+  // ---- Train accuracy against queries ----
+  function drawCurves(cv, big) {
+    const f = liveCanvas(cv, big);
+    if (!f) return;
+    const { ctx, w, h, dpr: u, bg } = f;
+    const c = clock(), k = inks(cv, big), surface = `rgb(${bg[0]},${bg[1]},${bg[2]})`;
+    const L = (big ? 38 : 7) * u, R = (big ? 16 : 10) * u, T = (big ? 70 : 26) * u, B = (big ? 42 : 31) * u;
+    const LO = big ? 33 : 34, HI = big ? 57 : 56;
+    const X = (q) => L + q / QMAX * (w - L - R), Y = (a) => h - B - (a - LO) / (HI - LO) * (h - B - T);
+
+    // Grid: hairlines at the paper's ticks, labelled in the lightbox.
+    ctx.strokeStyle = k.line; ctx.lineWidth = u;
+    (big ? [36, 42, 48, 54] : [40, 48]).forEach((a) => { ctx.beginPath(); ctx.moveTo(L, Y(a)); ctx.lineTo(w - R, Y(a)); ctx.stroke(); });
+    ctx.beginPath(); ctx.moveTo(L, h - B); ctx.lineTo(w - R, h - B); ctx.stroke();
+    if (big) {
+      ctx.fillStyle = k.mute; ctx.font = `${11 * u}px Inter, sans-serif`;
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      [36, 42, 48, 54].forEach((a) => ctx.fillText(a, L - 8 * u, Y(a)));
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      [0, 1000, 2000, 3000, 4000, 5000].forEach((q) => ctx.fillText(q ? q / 1000 + 'K' : '0', X(q), h - B + 7 * u));
+      ctx.fillText('Queries', (L + w - R) / 2, h - B + 23 * u);
+    }
+
+    // The curves up to the count, each led by a dot.
+    ctx.save();
+    ctx.globalAlpha = c.fade; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    const heads = [];
+    METHODS.forEach((m) => {
+      const ys = data.curves[m.key], a = accAt(ys, c.q);
+      if (a === null) return;
+      const lead = m.key === 'ZIP';
+      ctx.strokeStyle = k.color[m.key]; ctx.lineWidth = (lead ? (big ? 2.4 : 1.7) : (big ? 1.6 : 1.1)) * u;
+      ctx.beginPath(); ctx.moveTo(X(STEP), Y(ys[0]));
+      for (let i = 1; i < ys.length && (i + 1) * STEP <= c.q; i++) ctx.lineTo(X((i + 1) * STEP), Y(ys[i]));
+      ctx.lineTo(X(c.q), Y(a)); ctx.stroke();
+      heads.push({ m, a, x: X(c.q), y: Y(a) });
+    });
+    heads.forEach(({ m, x, y }) => {
+      ctx.fillStyle = k.color[m.key]; ctx.strokeStyle = surface; ctx.lineWidth = (big ? 2 : 1.2) * u;
+      ctx.beginPath(); ctx.arc(x, y, (m.key === 'ZIP' ? (big ? 4.5 : 2.6) : (big ? 3.5 : 2)) * u, 0, 6.2832); ctx.fill(); ctx.stroke();
+    });
+
+    // Once the count is past BlackVIP's best: where ZIP got there, and the queries saved.
+    if (c.note > 0) {
+      const y = Y(data.best.acc), xa = X(zipQ), xb = X(bestQ), ah = (big ? 6 : 4) * u;
+      ctx.globalAlpha = c.fade * c.note;
+      ctx.strokeStyle = ctx.fillStyle = k.ink; ctx.lineWidth = (big ? 1.3 : 1) * u;
+      ctx.beginPath(); ctx.moveTo(xb, y); ctx.lineTo(xa + ah, y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(xa + 1.5 * u, y); ctx.lineTo(xa + ah * 1.6, y - ah * 0.7); ctx.lineTo(xa + ah * 1.6, y + ah * 0.7); ctx.closePath(); ctx.fill();
+      // over the arrow's right end, where ZIP's curve has climbed clear of it; a halo in the
+      // surface colour keeps it legible where a short plot (a phone) brings the curve close
+      const note = `~${fold}× fewer queries`, ty = y - (big ? 6 : 3) * u;
+      ctx.font = `600 ${(big ? 12 : 7.5) * u}px Inter, sans-serif`; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+      ctx.strokeStyle = surface; ctx.lineWidth = (big ? 4 : 2.5) * u; ctx.lineJoin = 'round';
+      ctx.strokeText(note, xb, ty); ctx.fillText(note, xb, ty);
+    }
+    ctx.restore();
+
+    if (!big) return;
+    // The count, top right; a line lower where the lightbox's close button sits over this corner.
+    const x = document.querySelector('.lightbox-close')?.getBoundingClientRect(), r = cv.getBoundingClientRect();
+    const under = x && x.right > r.left && x.left < r.right && x.bottom > r.top && x.top < r.top + 40;
+    ctx.fillStyle = k.ink; ctx.font = `600 ${14 * u}px Inter, sans-serif`; ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+    ctx.fillText(fmt(c.q), w - 14 * u, (under ? 46 : 12) * u);
+    ctx.fillStyle = k.mute; ctx.font = `${11 * u}px Inter, sans-serif`;
+    ctx.fillText('queries', w - 14 * u, (under ? 64 : 30) * u);
+
+    // Under the pointer: a rule, and every method's accuracy there.
+    if (scrub === null) return;
+    const xs = X(scrub), rows = heads.slice().sort((p, q) => q.a - p.a);
+    ctx.strokeStyle = k.mute; ctx.lineWidth = u; ctx.globalAlpha = 0.6;
+    ctx.beginPath(); ctx.moveTo(xs, T - 8 * u); ctx.lineTo(xs, h - B); ctx.stroke();
+    ctx.globalAlpha = 1;
+    const bw = 136 * u, rh = 18 * u, bh = rows.length * rh + 12 * u;
+    const bx = xs + 12 * u + bw < w - 6 * u ? xs + 12 * u : xs - 12 * u - bw, by = h - B - bh - 8 * u;
+    ctx.fillStyle = k.card; ctx.strokeStyle = k.line;
+    ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 6 * u); ctx.fill(); ctx.stroke();
+    ctx.font = `${11.5 * u}px Inter, sans-serif`; ctx.textBaseline = 'middle';
+    rows.forEach(({ m, a }, j) => {
+      const y = by + 6 * u + rh * (j + 0.5);
+      ctx.fillStyle = k.color[m.key]; ctx.beginPath(); ctx.arc(bx + 12 * u, y, 3.5 * u, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = k.soft; ctx.textAlign = 'left'; ctx.fillText(m.name, bx + 22 * u, y);
+      ctx.fillStyle = k.ink; ctx.textAlign = 'right'; ctx.fillText(a.toFixed(1) + '%', bx + bw - 10 * u, y);
+    });
+  }
+
+  // ---- Queries to reach the target accuracy, filling on the same count (lightbox) ----
+  function drawBars(cv) {
+    const f = liveCanvas(cv, true);
+    if (!f) return;
+    const { ctx, w, h, dpr: u } = f;
+    const c = clock(), k = inks(cv, true);
+    const rows = METHODS.map((m) => ({ m, q: data.queries[m.key] })).sort((a, b) => a.q - b.q);
+    const L = 80 * u, R = 44 * u, T = 70 * u, B = 66 * u, QB = 2500;
+    const X = (q) => L + q / QB * (w - L - R);
+    ctx.strokeStyle = k.line; ctx.lineWidth = u;
+    ctx.fillStyle = k.mute; ctx.font = `${11 * u}px Inter, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    [0, 500, 1000, 1500, 2000].forEach((q) => {   // a line every 500, a label every 1,000
+      ctx.beginPath(); ctx.moveTo(X(q), T - 6 * u); ctx.lineTo(X(q), h - B); ctx.stroke();
+      if (q % 1000 === 0) ctx.fillText(fmt(q), X(q), h - B + 7 * u);
+    });
+    const band = (h - T - B) / rows.length, bh = Math.min(20 * u, band * 0.5);
+    rows.forEach(({ m, q }, i) => {
+      const y = T + band * (i + 0.5), len = Math.min(c.q, q), done = clamp((c.q - q) / 150);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = m.key === 'ZIP' ? k.ink : k.soft;
+      ctx.font = `${m.key === 'ZIP' ? 600 : 400} ${12 * u}px Inter, sans-serif`; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText(m.name, L - 10 * u, y);
+      if (len <= 0) return;
+      // a bar, square at the baseline and rounded at its end, pale until it reaches the target
+      const x1 = X(len), r = Math.min(4 * u, (x1 - L) / 2);
+      ctx.globalAlpha = c.fade * (0.38 + 0.62 * done); ctx.fillStyle = k.color[m.key];
+      ctx.beginPath(); ctx.roundRect(L, y - bh / 2, x1 - L, bh, [0, r, r, 0]); ctx.fill();
+      if (done > 0) {
+        ctx.globalAlpha = c.fade * done; ctx.fillStyle = k.ink;
+        ctx.font = `600 ${12 * u}px Inter, sans-serif`; ctx.textAlign = 'left';
+        ctx.fillText(fmt(q), x1 + 7 * u, y);
+      }
+    });
+    // ZIP against the best baseline, once both are in
+    const zipRow = rows.find((r) => r.m.key === 'ZIP'), next = rows.find((r) => r.m.key !== 'ZIP');
+    const shown = clamp((c.q - Math.max(zipRow.q, next.q)) / 300) * c.fade;
+    if (shown > 0) {
+      const y = h - B + 34 * u;
+      ctx.globalAlpha = shown; ctx.fillStyle = k.color.ZIP;
+      ctx.beginPath(); ctx.arc(18 * u, y, 3.5 * u, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = k.soft; ctx.font = `${12 * u}px Inter, sans-serif`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(`ZIP: ${(next.q / zipRow.q).toFixed(1)}× fewer queries than ${next.m.name}`, 28 * u, y);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  const legend = ['ZIP', 'BAR', 'BlackVIP', 'BPTVLM'].map((key) => {
+    const m = METHODS.find((x) => x.key === key);
+    return `<span><i class="${m.cls}"></i>${m.name}</span>`;
+  }).join('');
+  const bigViews = [];
+  const redraw = () => bigViews.forEach(([cv, paint]) => paint(cv, true));
+
+  liveFigure(document.getElementById('zipThumb'), boxRoot, {
+    step() {},
+    build(root, big) {
+      if (!big) {
+        const cvs = livePanels(root, ['<div class="lf-t solo">Black-Box Search</div>', '<div class="lf-t solo">Train Accuracy</div>'], null, '1fr 1.3fr');
+        root.insertAdjacentHTML('beforeend', `<div class="lf-legend is-tight is-right">${legend}</div>`);   // over the curves it keys
+        return [[cvs[0], drawSearch], [cvs[1], drawCurves]];
+      }
+      const inner = [
+        '<div class="lf-t">Black-Box Search<small>A sketch: outputs only, no gradients</small></div>',
+        '<div class="lf-t">Queries to Reach the Target<small>Mean over 13 tasks</small></div>',
+        '<div class="lf-t">Training Accuracy (%)<small>Mean over 13 tasks</small></div>',
+      ];
+      const foot = `<span class="lf-legend">${legend}</span><span>Hover the curves to read them</span>`;
+      const cvs = livePanels(root, inner, foot);
+      // Point at the curves to set the count there; let go and it runs on from there.
+      const pane = cvs[2].parentElement;
+      pane.classList.add('is-scrub');
+      const at = (e) => {
+        const r = cvs[2].getBoundingClientRect();
+        return Math.max(STEP, Math.min(QMAX, (e.clientX - r.left - 38) / (r.width - 54) * QMAX));
+      };
+      const move = (e) => { scrub = at(e); redraw(); };
+      pane.addEventListener('pointermove', move);
+      pane.addEventListener('pointerdown', move);
+      pane.addEventListener('pointerleave', () => { release(); redraw(); });
+      pane.addEventListener('pointercancel', () => { release(); redraw(); });
+      pane.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') { release(); redraw(); } });
+      bigViews.push([cvs[0], drawSearch], [cvs[1], drawBars], [cvs[2], drawCurves]);
+      return bigViews.slice();
+    },
+    draw(cv, paint, big) { paint(cv, big); },
+  });
+})();
